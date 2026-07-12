@@ -1,1178 +1,1759 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nishanth S | 3D Interactive Software Portfolio</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                    colors: {
-                        cyber: {
-                            bg: '#040712',
-                            card: 'rgba(9, 15, 35, 0.7)',
-                            border: 'rgba(139, 92, 246, 0.2)',
-                            terminal: '#02040a',
-                            primary: '#8b5cf6', // Neon Violet
-                            secondary: '#06b6d4', // Cyan
-                            accent: '#10b981' // Emerald
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+            colors: {
+              cyber: {
+                bg: "#040712",
+                card: "rgba(9, 15, 35, 0.7)",
+                border: "rgba(139, 92, 246, 0.2)",
+                terminal: "#02040a",
+                primary: "#8b5cf6", // Neon Violet
+                secondary: "#06b6d4", // Cyan
+                accent: "#10b981", // Emerald
+              },
+            },
+          },
+        },
+      };
     </script>
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #040712;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e1b4b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #8b5cf6;
+      }
+      .glass-panel {
+        background: rgba(9, 15, 35, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .glass-panel:hover {
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+      .text-glow-violet {
+        text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+      }
+      .text-glow-cyan {
+        text-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+      }
+      .card-glow-emerald:hover {
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+        border-color: rgba(16, 185, 129, 0.4);
+      }
+      .card-glow-violet:hover {
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+        border-color: rgba(139, 92, 246, 0.4);
+      }
+      .card-glow-cyan:hover {
+        box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+        border-color: rgba(6, 182, 212, 0.4);
+      }
+      /* Pulse Animation for cyber systems */
+      @keyframes systemPulse {
+        0%,
+        100% {
+          opacity: 0.8;
+          transform: scale(1);
         }
-        ::-webkit-scrollbar-track {
-            background: #040712;
+        50% {
+          opacity: 1;
+          transform: scale(1.03);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #1e1b4b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8b5cf6;
-        }
-        .glass-panel {
-            background: rgba(9, 15, 35, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-panel:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-        }
-        .text-glow-violet {
-            text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
-        }
-        .text-glow-cyan {
-            text-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
-        }
-        .card-glow-emerald:hover {
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.4);
-        }
-        .card-glow-violet:hover {
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
-            border-color: rgba(139, 92, 246, 0.4);
-        }
-        .card-glow-cyan:hover {
-            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
-            border-color: rgba(6, 182, 212, 0.4);
-        }
-        /* Pulse Animation for cyber systems */
-        @keyframes systemPulse {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
-        }
-        .pulse-active {
-            animation: systemPulse 2s infinite ease-in-out;
-        }
+      }
+      .pulse-active {
+        animation: systemPulse 2s infinite ease-in-out;
+      }
     </style>
-</head>
-<body class="bg-cyber-bg text-gray-300 font-sans antialiased overflow-x-hidden relative">
-
+  </head>
+  <body
+    class="bg-cyber-bg text-gray-300 font-sans antialiased overflow-x-hidden relative"
+  >
     <!-- 3D Canvas Background for Three.js Simulation -->
-    <div class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden bg-cyber-bg pointer-events-none">
-        <canvas id="threeCanvas" class="w-full h-full"></canvas>
+    <div
+      class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden bg-cyber-bg pointer-events-none"
+    >
+      <canvas id="threeCanvas" class="w-full h-full"></canvas>
     </div>
 
     <!-- UI Overlay for Interactive Camera Rotation Hints -->
-    <div class="fixed bottom-4 right-4 z-40 bg-cyber-bg/80 backdrop-blur-md border border-gray-800 px-3 py-1.5 rounded-lg text-[10px] font-mono text-gray-400 pointer-events-none hidden md:flex items-center space-x-2">
-        <span class="w-2 h-2 rounded-full bg-cyber-secondary animate-ping"></span>
-        <span>Drag anywhere on empty space to orbit 3D simulation scene</span>
+    <div
+      class="fixed bottom-4 right-4 z-40 bg-cyber-bg/80 backdrop-blur-md border border-gray-800 px-3 py-1.5 rounded-lg text-[10px] font-mono text-gray-400 pointer-events-none hidden md:flex items-center space-x-2"
+    >
+      <span class="w-2 h-2 rounded-full bg-cyber-secondary animate-ping"></span>
+      <span>Drag anywhere on empty space to orbit 3D simulation scene</span>
     </div>
 
     <!-- Interactive Navigation Terminal HUD -->
-    <header class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="flex space-x-1">
-                    <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
-                </div>
-                <a href="#hero" class="text-white font-mono font-bold text-sm sm:text-base ml-2 tracking-wider flex items-center space-x-1.5">
-                    <span class="text-cyber-primary">&lt;</span>
-                    <span>NishanthS.3D</span>
-                    <span class="text-cyber-secondary">/&gt;</span>
-                </a>
-            </div>
-            
-            <nav class="hidden md:flex space-x-5 font-mono text-xs">
-                <button onclick="scrollToAndMorph('about', 1)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">SYS_PROFILE</button>
-                <button onclick="scrollToAndMorph('experience', 3)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">EXP_LOGS</button>
-                <button onclick="scrollToAndMorph('skills', 1)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">TECH_STACK</button>
-                <button onclick="scrollToAndMorph('projects', 2)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">PROJ_CORES</button>
-                <button onclick="scrollToAndMorph('network', 4)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">INFRA_NET</button>
-                <button onclick="scrollToAndMorph('contact', 0)" class="text-gray-400 hover:text-cyber-primary transition-colors py-1">EST_CONN</button>
-            </nav>
-            
-            <div class="flex items-center space-x-3">
-                <!-- Verbatim verification to the user's PDF resume -->
-                <button onclick="toggleResumeModal()" class="hidden sm:inline-flex bg-gray-950 border border-gray-800 hover:border-cyber-secondary text-gray-300 hover:text-cyber-secondary transition-all px-3 py-1.5 rounded-md font-mono text-xs items-center">
-                    <i class="fa-solid fa-file-pdf mr-1.5 text-red-500"></i>Nishanth .resume.pdf
-                </button>
-                <a href="mailto:snishanthnishanths5@gmail.com" class="bg-cyber-primary/10 border border-cyber-primary/40 text-cyber-primary hover:bg-cyber-primary hover:text-cyber-bg transition-all duration-300 px-4 py-1.5 rounded-md font-mono text-xs">
-                    <i class="fa-solid fa-paper-plane mr-1"></i>PING_SYS
-                </a>
-            </div>
+    <header
+      class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/5"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <div class="flex items-center space-x-3">
+          <div class="flex space-x-1">
+            <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+          </div>
+          <a
+            href="#hero"
+            class="text-white font-mono font-bold text-sm sm:text-base ml-2 tracking-wider flex items-center space-x-1.5"
+          >
+            <span class="text-cyber-primary">&lt;</span>
+            <span>NishanthS.3D</span>
+            <span class="text-cyber-secondary">/&gt;</span>
+          </a>
         </div>
+
+        <nav class="hidden md:flex space-x-5 font-mono text-xs">
+          <button
+            onclick="scrollToAndMorph('about', 1)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            SYS_PROFILE
+          </button>
+          <button
+            onclick="scrollToAndMorph('experience', 3)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            EXP_LOGS
+          </button>
+          <button
+            onclick="scrollToAndMorph('skills', 1)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            TECH_STACK
+          </button>
+          <button
+            onclick="scrollToAndMorph('projects', 2)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            PROJ_CORES
+          </button>
+          <button
+            onclick="scrollToAndMorph('network', 4)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            INFRA_NET
+          </button>
+          <button
+            onclick="scrollToAndMorph('contact', 0)"
+            class="text-gray-400 hover:text-cyber-primary transition-colors py-1"
+          >
+            EST_CONN
+          </button>
+        </nav>
+
+        <div class="flex items-center space-x-3">
+          <!-- Verbatim verification to the user's PDF resume -->
+          <button
+            onclick="toggleResumeModal()"
+            class="hidden sm:inline-flex bg-gray-950 border border-gray-800 hover:border-cyber-secondary text-gray-300 hover:text-cyber-secondary transition-all px-3 py-1.5 rounded-md font-mono text-xs items-center"
+          >
+            <i class="fa-solid fa-file-pdf mr-1.5 text-red-500"></i>Nishanth
+            .resume.pdf
+          </button>
+          <a
+            href="mailto:snishanthnishanths5@gmail.com"
+            class="bg-cyber-primary/10 border border-cyber-primary/40 text-cyber-primary hover:bg-cyber-primary hover:text-cyber-bg transition-all duration-300 px-4 py-1.5 rounded-md font-mono text-xs"
+          >
+            <i class="fa-solid fa-paper-plane mr-1"></i>PING_SYS
+          </a>
+        </div>
+      </div>
     </header>
 
     <!-- Floating 3D Vector Modulator Control Deck -->
-    <div class="fixed top-20 right-4 z-40 max-w-xs w-64 glass-panel rounded-xl p-4 hidden lg:block font-mono text-xs border border-white/10 shadow-2xl">
-        <div class="flex items-center justify-between border-b border-white/5 pb-2 mb-3">
-            <span class="text-white font-bold flex items-center">
-                <i class="fa-solid fa-cube text-cyber-secondary mr-2 animate-spin"></i>3D_GRID_MODULATOR
-            </span>
-            <span class="text-[9px] bg-cyber-primary/10 text-cyber-primary border border-cyber-primary/20 px-1.5 py-0.5 rounded">ONLINE</span>
+    <div
+      class="fixed top-20 right-4 z-40 max-w-xs w-64 glass-panel rounded-xl p-4 hidden lg:block font-mono text-xs border border-white/10 shadow-2xl"
+    >
+      <div
+        class="flex items-center justify-between border-b border-white/5 pb-2 mb-3"
+      >
+        <span class="text-white font-bold flex items-center">
+          <i class="fa-solid fa-cube text-cyber-secondary mr-2 animate-spin"></i
+          >3D_GRID_MODULATOR
+        </span>
+        <span
+          class="text-[9px] bg-cyber-primary/10 text-cyber-primary border border-cyber-primary/20 px-1.5 py-0.5 rounded"
+          >ONLINE</span
+        >
+      </div>
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-gray-400 mb-1.5 text-[10px]"
+            >ACTIVE GEOMETRY SCAN:</label
+          >
+          <div class="grid grid-cols-2 gap-1.5">
+            <button
+              onclick="morphParticlesTo(0)"
+              class="bg-gray-900/80 border border-white/5 hover:border-cyber-primary p-1.5 rounded text-left flex items-center justify-between group transition-all"
+            >
+              <span>Helix</span>
+              <span class="text-[9px] text-cyber-primary">0</span>
+            </button>
+            <button
+              onclick="morphParticlesTo(1)"
+              class="bg-gray-900/80 border border-white/5 hover:border-cyber-secondary p-1.5 rounded text-left flex items-center justify-between group transition-all"
+            >
+              <span>Sphere</span>
+              <span class="text-[9px] text-cyber-secondary">1</span>
+            </button>
+            <button
+              onclick="morphParticlesTo(2)"
+              class="bg-gray-900/80 border border-white/5 hover:border-cyber-accent p-1.5 rounded text-left flex items-center justify-between group transition-all"
+            >
+              <span>Grid</span>
+              <span class="text-[9px] text-cyber-accent">2</span>
+            </button>
+            <button
+              onclick="morphParticlesTo(3)"
+              class="bg-gray-900/80 border border-white/5 hover:border-violet-400 p-1.5 rounded text-left flex items-center justify-between group transition-all"
+            >
+              <span>Wave</span>
+              <span class="text-[9px] text-violet-400">3</span>
+            </button>
+            <button
+              onclick="morphParticlesTo(4)"
+              class="bg-gray-900/80 border border-white/5 hover:border-pink-400 p-1.5 rounded text-left flex items-center justify-between group transition-all col-span-2"
+            >
+              <span>Quantum Ring</span>
+              <span class="text-[9px] text-pink-400">4</span>
+            </button>
+          </div>
         </div>
-        <div class="space-y-3.5">
-            <div>
-                <label class="block text-gray-400 mb-1.5 text-[10px]">ACTIVE GEOMETRY SCAN:</label>
-                <div class="grid grid-cols-2 gap-1.5">
-                    <button onclick="morphParticlesTo(0)" class="bg-gray-900/80 border border-white/5 hover:border-cyber-primary p-1.5 rounded text-left flex items-center justify-between group transition-all">
-                        <span>Helix</span> <span class="text-[9px] text-cyber-primary">0</span>
-                    </button>
-                    <button onclick="morphParticlesTo(1)" class="bg-gray-900/80 border border-white/5 hover:border-cyber-secondary p-1.5 rounded text-left flex items-center justify-between group transition-all">
-                        <span>Sphere</span> <span class="text-[9px] text-cyber-secondary">1</span>
-                    </button>
-                    <button onclick="morphParticlesTo(2)" class="bg-gray-900/80 border border-white/5 hover:border-cyber-accent p-1.5 rounded text-left flex items-center justify-between group transition-all">
-                        <span>Grid</span> <span class="text-[9px] text-cyber-accent">2</span>
-                    </button>
-                    <button onclick="morphParticlesTo(3)" class="bg-gray-900/80 border border-white/5 hover:border-violet-400 p-1.5 rounded text-left flex items-center justify-between group transition-all">
-                        <span>Wave</span> <span class="text-[9px] text-violet-400">3</span>
-                    </button>
-                    <button onclick="morphParticlesTo(4)" class="bg-gray-900/80 border border-white/5 hover:border-pink-400 p-1.5 rounded text-left flex items-center justify-between group transition-all col-span-2">
-                        <span>Quantum Ring</span> <span class="text-[9px] text-pink-400">4</span>
-                    </button>
-                </div>
-            </div>
 
-            <div>
-                <div class="flex justify-between mb-1 text-[10px]">
-                    <span class="text-gray-400">MODULATION VELOCITY:</span>
-                    <span id="speedValue" class="text-cyber-secondary">1.0x</span>
-                </div>
-                <input id="speedSlider" type="range" min="0.1" max="3" step="0.1" value="1.0" class="w-full accent-cyber-secondary bg-gray-800 rounded-lg appearance-none h-1 cursor-pointer">
-            </div>
-
-            <div class="border-t border-white/5 pt-3">
-                <div class="flex justify-between items-center text-[10px] text-gray-500">
-                    <span>PARTICLES IN BUFFER</span>
-                    <span class="text-white font-bold">800 NODES</span>
-                </div>
-                <div class="flex justify-between items-center text-[10px] text-gray-500 mt-1">
-                    <span>VISUAL MATRIX GLOW</span>
-                    <span class="text-cyber-accent font-bold">ACTIVE</span>
-                </div>
-            </div>
+        <div>
+          <div class="flex justify-between mb-1 text-[10px]">
+            <span class="text-gray-400">MODULATION VELOCITY:</span>
+            <span id="speedValue" class="text-cyber-secondary">1.0x</span>
+          </div>
+          <input
+            id="speedSlider"
+            type="range"
+            min="0.1"
+            max="3"
+            step="0.1"
+            value="1.0"
+            class="w-full accent-cyber-secondary bg-gray-800 rounded-lg appearance-none h-1 cursor-pointer"
+          />
         </div>
+
+        <div class="border-t border-white/5 pt-3">
+          <div
+            class="flex justify-between items-center text-[10px] text-gray-500"
+          >
+            <span>PARTICLES IN BUFFER</span>
+            <span class="text-white font-bold">800 NODES</span>
+          </div>
+          <div
+            class="flex justify-between items-center text-[10px] text-gray-500 mt-1"
+          >
+            <span>VISUAL MATRIX GLOW</span>
+            <span class="text-cyber-accent font-bold">ACTIVE</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Main Content Stream Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-24 relative z-10">
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-24 relative z-10"
+    >
+      <!-- Interactive Workspace Hero Section -->
+      <section
+        id="hero"
+        class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-8rem)]"
+      >
+        <div class="lg:col-span-5 space-y-6">
+          <div
+            class="inline-flex items-center space-x-2 bg-cyber-primary/10 border border-cyber-primary/30 px-3 py-1 rounded-full text-xs font-mono text-cyber-secondary"
+          >
+            <span
+              class="w-2.5 h-2.5 rounded-full bg-cyber-secondary animate-ping"
+            ></span>
+            <span>Ready for Entry-Level Software Engineering</span>
+          </div>
 
-        <!-- Interactive Workspace Hero Section -->
-        <section id="hero" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-8rem)]">
-            <div class="lg:col-span-5 space-y-6">
-                <div class="inline-flex items-center space-x-2 bg-cyber-primary/10 border border-cyber-primary/30 px-3 py-1 rounded-full text-xs font-mono text-cyber-secondary">
-                    <span class="w-2.5 h-2.5 rounded-full bg-cyber-secondary animate-ping"></span>
-                    <span>Ready for Entry-Level Software Engineering</span>
-                </div>
-                
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                    Architecting <br />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-primary via-cyber-secondary to-cyber-accent text-glow-violet">3D Structures</span>
-                    <br />&amp; Scalable Systems.
-                </h1>
-                
-                <p class="text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl">
-                    I'm <span class="text-white font-bold text-glow-cyan">Nishanth S</span>, a Computer Science Engineering student dedicated to writing clean modular code, implementing functional user-centric designs, and troubleshooting structural security environments.
-                </p>
+          <h1
+            class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight"
+          >
+            Architecting <br />
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-primary via-cyber-secondary to-cyber-accent text-glow-violet"
+              >3D Structures</span
+            >
+            <br />&amp; Scalable Systems.
+          </h1>
 
-                <div class="flex flex-wrap gap-4 pt-2">
-                    <button onclick="scrollToAndMorph('projects', 2)" class="bg-gradient-to-r from-cyber-primary to-cyber-secondary text-white hover:opacity-90 transition-all font-bold font-mono text-xs px-6 py-3.5 rounded-lg flex items-center space-x-2 shadow-lg shadow-cyber-primary/25">
-                        <i class="fa-solid fa-circle-nodes"></i>
-                        <span>DEPLOYED_PROJECTS</span>
-                    </button>
-                    <button onclick="scrollToAndMorph('about', 1)" class="bg-gray-950/80 hover:bg-gray-900 border border-gray-800 hover:border-cyber-secondary text-white font-mono text-xs px-6 py-3.5 rounded-lg flex items-center space-x-2 transition-all">
-                        <i class="fa-solid fa-code"></i>
-                        <span>SYSTEM_SPECS</span>
-                    </button>
-                </div>
+          <p
+            class="text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl"
+          >
+            I'm
+            <span class="text-white font-bold text-glow-cyan">Nishanth S</span>,
+            a Computer Science Engineering student dedicated to writing clean
+            modular code, implementing functional user-centric designs, and
+            troubleshooting structural security environments.
+          </p>
+
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button
+              onclick="scrollToAndMorph('projects', 2)"
+              class="bg-gradient-to-r from-cyber-primary to-cyber-secondary text-white hover:opacity-90 transition-all font-bold font-mono text-xs px-6 py-3.5 rounded-lg flex items-center space-x-2 shadow-lg shadow-cyber-primary/25"
+            >
+              <i class="fa-solid fa-circle-nodes"></i>
+              <span>DEPLOYED_PROJECTS</span>
+            </button>
+            <button
+              onclick="scrollToAndMorph('about', 1)"
+              class="bg-gray-950/80 hover:bg-gray-900 border border-gray-800 hover:border-cyber-secondary text-white font-mono text-xs px-6 py-3.5 rounded-lg flex items-center space-x-2 transition-all"
+            >
+              <i class="fa-solid fa-code"></i>
+              <span>SYSTEM_SPECS</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal Console & Interactive Environment Emulator -->
+        <div
+          class="lg:col-span-7 glass-panel rounded-xl overflow-hidden flex flex-col h-[400px] border border-white/10 shadow-2xl transition-all duration-300 hover:border-cyber-primary/40"
+        >
+          <div
+            class="bg-cyber-terminal px-4 py-2 flex items-center justify-between border-b border-white/5 text-xs font-mono"
+          >
+            <div class="flex space-x-2 items-center">
+              <div
+                class="bg-cyber-bg/80 px-3 py-1.5 rounded-t-md text-cyber-secondary border-t border-cyber-secondary flex items-center space-x-1.5"
+              >
+                <i class="fa-solid fa-terminal text-cyber-secondary"></i>
+                <span>sh_workspace.sh</span>
+              </div>
+              <div
+                class="opacity-50 px-3 py-1.5 hover:opacity-100 cursor-pointer flex items-center space-x-1.5"
+                onclick="runCommand('cat bio.md')"
+              >
+                <i class="fa-solid fa-info-circle text-cyber-primary"></i>
+                <span>bio.md</span>
+              </div>
+              <div
+                class="opacity-50 px-3 py-1.5 hover:opacity-100 cursor-pointer flex items-center space-x-1.5"
+                onclick="runCommand('git log')"
+              >
+                <i class="fa-solid fa-code-commit text-cyber-accent"></i>
+                <span>commits</span>
+              </div>
+            </div>
+            <span class="text-gray-500 hidden sm:inline text-[10px]"
+              >TERMINAL V3.0</span
+            >
+          </div>
+
+          <!-- Terminal Shell Workspace Log window -->
+          <div
+            id="terminal-screen"
+            class="p-4 font-mono text-xs overflow-y-auto flex-1 space-y-3.5 scroll-smooth bg-cyber-terminal/80"
+          >
+            <div class="text-gray-500">
+              // Connected successfully to Nishanth's 3D Interactive Terminal
+              interface.
+            </div>
+            <div class="text-gray-500">
+              // Input
+              <span class="text-cyber-secondary font-bold">'help'</span> to
+              fetch valid automation commands.
             </div>
 
-            <!-- Terminal Console & Interactive Environment Emulator -->
-            <div class="lg:col-span-7 glass-panel rounded-xl overflow-hidden flex flex-col h-[400px] border border-white/10 shadow-2xl transition-all duration-300 hover:border-cyber-primary/40">
-                <div class="bg-cyber-terminal px-4 py-2 flex items-center justify-between border-b border-white/5 text-xs font-mono">
-                    <div class="flex space-x-2 items-center">
-                        <div class="bg-cyber-bg/80 px-3 py-1.5 rounded-t-md text-cyber-secondary border-t border-cyber-secondary flex items-center space-x-1.5">
-                            <i class="fa-solid fa-terminal text-cyber-secondary"></i>
-                            <span>sh_workspace.sh</span>
-                        </div>
-                        <div class="opacity-50 px-3 py-1.5 hover:opacity-100 cursor-pointer flex items-center space-x-1.5" onclick="runCommand('cat bio.md')">
-                            <i class="fa-solid fa-info-circle text-cyber-primary"></i>
-                            <span>bio.md</span>
-                        </div>
-                        <div class="opacity-50 px-3 py-1.5 hover:opacity-100 cursor-pointer flex items-center space-x-1.5" onclick="runCommand('git log')">
-                            <i class="fa-solid fa-code-commit text-cyber-accent"></i>
-                            <span>commits</span>
-                        </div>
-                    </div>
-                    <span class="text-gray-500 hidden sm:inline text-[10px]">TERMINAL V3.0</span>
+            <div id="terminal-history-list">
+              <div class="flex items-center space-x-2 text-cyber-primary">
+                <span>$</span>
+                <span class="text-white">sys_diagnostic</span>
+              </div>
+              <div
+                class="text-gray-400 mt-1 p-2 bg-gray-900/60 rounded border border-white/5 space-y-1"
+              >
+                <div class="text-cyber-accent font-bold">
+                  &gt; Nishanth S Developer Core Node Active
                 </div>
-                
-                <!-- Terminal Shell Workspace Log window -->
-                <div id="terminal-screen" class="p-4 font-mono text-xs overflow-y-auto flex-1 space-y-3.5 scroll-smooth bg-cyber-terminal/80">
-                    <div class="text-gray-500">// Connected successfully to Nishanth's 3D Interactive Terminal interface.</div>
-                    <div class="text-gray-500">// Input <span class="text-cyber-secondary font-bold">'help'</span> to fetch valid automation commands.</div>
-                    
-                    <div id="terminal-history-list">
-                        <div class="flex items-center space-x-2 text-cyber-primary">
-                            <span>$</span>
-                            <span class="text-white">sys_diagnostic</span>
-                        </div>
-                        <div class="text-gray-400 mt-1 p-2 bg-gray-900/60 rounded border border-white/5 space-y-1">
-                            <div class="text-cyber-accent font-bold">&gt; Nishanth S Developer Core Node Active</div>
-                            <div>- Major Node: Amrita College of Engineering (CSE 2026)</div>
-                            <div>- Status: Ready to develop clean architecture applications</div>
-                            <div>- Active Stack: Python / Web Architectures / Subnetting & Sec</div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <span class="text-cyber-secondary">$</span>
-                        <input id="shell-cmd-input" type="text" class="bg-transparent text-white border-none outline-none focus:ring-0 p-0 flex-1 w-full font-mono text-xs" placeholder="Type command e.g., help..." autocomplete="off">
-                    </div>
+                <div>
+                  - Major Node: Amrita College of Engineering (CSE 2026)
                 </div>
-            </div>
-        </section>
-
-        <!-- Core Engineering Profile -->
-        <section id="about" class="space-y-10">
-            <div class="border-l-4 border-cyber-primary pl-4">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">01. SYS_DEVELOPER_SPECS</h2>
-                <p class="text-gray-500 text-xs sm:text-sm">Structured profiles and logical computer science branches</p>
+                <div>
+                  - Status: Ready to develop clean architecture applications
+                </div>
+                <div>
+                  - Active Stack: Python / Web Architectures / Subnetting & Sec
+                </div>
+              </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Architecture Card -->
-                <div class="glass-panel p-6 rounded-xl hover:border-cyber-primary/40 transition-colors group card-glow-violet">
-                    <div class="w-12 h-12 rounded-lg bg-cyber-primary/10 flex items-center justify-center text-cyber-primary mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-laptop-code text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Software Engineering</h3>
-                    <p class="text-gray-400 text-sm">
-                        Composing procedural solutions using C++ and Python. Focused on clean object-oriented concepts, code maintenance, and performance evaluation metrics.
-                    </p>
-                </div>
-
-                <!-- Web Front-End Card -->
-                <div class="glass-panel p-6 rounded-xl hover:border-cyber-secondary/40 transition-colors group card-glow-cyan">
-                    <div class="w-12 h-12 rounded-lg bg-cyber-secondary/10 flex items-center justify-center text-cyber-secondary mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Front-End UI Design</h3>
-                    <p class="text-gray-400 text-sm">
-                        Building fluid responsive layouts using HTML, CSS, and modern JavaScript libraries. Highly experienced in translating high-fidelity interactive wireframes into operational code.
-                    </p>
-                </div>
-
-                <!-- Networking & Security Card -->
-                <div class="glass-panel p-6 rounded-xl hover:border-cyber-accent/40 transition-colors group card-glow-emerald">
-                    <div class="w-12 h-12 rounded-lg bg-cyber-accent/10 flex items-center justify-center text-cyber-accent mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-shield-halved text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Secure Infrastructure</h3>
-                    <p class="text-gray-400 text-sm">
-                        In-depth understanding of computer network structures, protocols (OSI, TCP/IP), network packet analyzer platforms like Wireshark, and Linux server workflows.
-                    </p>
-                </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-cyber-secondary">$</span>
+              <input
+                id="shell-cmd-input"
+                type="text"
+                class="bg-transparent text-white border-none outline-none focus:ring-0 p-0 flex-1 w-full font-mono text-xs"
+                placeholder="Type command e.g., help..."
+                autocomplete="off"
+              />
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <!-- Practical Work Timeline logs -->
-        <section id="experience" class="space-y-10">
-            <div class="border-l-4 border-cyber-secondary pl-4">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">02. WORK_INTEGRATION_LOGS</h2>
-                <p class="text-gray-500 text-xs sm:text-sm">Verified professional internships and workspace assignments</p>
+      <!-- Core Engineering Profile -->
+      <section id="about" class="space-y-10">
+        <div class="border-l-4 border-cyber-primary pl-4">
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono"
+          >
+            01. SYS_DEVELOPER_SPECS
+          </h2>
+          <p class="text-gray-500 text-xs sm:text-sm">
+            Structured profiles and logical computer science branches
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Architecture Card -->
+          <div
+            class="glass-panel p-6 rounded-xl hover:border-cyber-primary/40 transition-colors group card-glow-violet"
+          >
+            <div
+              class="w-12 h-12 rounded-lg bg-cyber-primary/10 flex items-center justify-center text-cyber-primary mb-4 group-hover:scale-110 transition-transform"
+            >
+              <i class="fa-solid fa-laptop-code text-xl"></i>
             </div>
+            <h3 class="text-lg font-bold text-white mb-2 font-mono">
+              Software Engineering
+            </h3>
+            <p class="text-gray-400 text-sm">
+              Composing procedural solutions using C++ and Python. Focused on
+              clean object-oriented concepts, code maintenance, and performance
+              evaluation metrics.
+            </p>
+          </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- UI/UX Developer Internship -->
-                <div class="glass-panel rounded-xl overflow-hidden group hover:border-cyber-primary/40 transition-all duration-300 flex flex-col justify-between card-glow-violet">
-                    <div class="p-6 space-y-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-white group-hover:text-cyber-primary transition-colors">UI/UX Designer Intern</h3>
-                                <p class="text-sm text-cyber-secondary font-mono">Alo Infotech</p>
-                            </div>
-                            <span class="bg-cyber-primary/10 text-cyber-primary border border-cyber-primary/20 px-2.5 py-1 rounded text-xs font-mono">3 Weeks</span>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-400 list-disc list-inside">
-                            <li>Acquired advanced expertise in Figma design ecosystems, components architecture, auto-layouts, and design tokens.</li>
-                            <li>Engineered highly interactive responsive UI wireframes ensuring clean layout alignments and pixel-perfect outputs.</li>
-                            <li>Applied agile product practices and coordinated with software teams during engineering handover procedures.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-950/80 px-6 py-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400">
-                        <span>Tools: Figma, Auto-Layout, Responsive States</span>
-                    </div>
-                </div>
-
-                <!-- Machine Learning & Python Internship -->
-                <div class="glass-panel rounded-xl overflow-hidden group hover:border-cyber-secondary/40 transition-all duration-300 flex flex-col justify-between card-glow-cyan">
-                    <div class="p-6 space-y-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-white group-hover:text-cyber-secondary transition-colors">Python & ML Intern</h3>
-                                <p class="text-sm text-cyber-secondary font-mono">Srishti Innovative Computer Systems</p>
-                            </div>
-                            <span class="bg-cyber-secondary/10 text-cyber-secondary border border-cyber-secondary/20 px-2.5 py-1 rounded text-xs font-mono">6 Days Intensive</span>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-400 list-disc list-inside">
-                            <li>Explored procedural Python syntax, dataset parsing tools, and predictive math structures.</li>
-                            <li>Implemented supervised machine learning classifiers designed to preprocess complex data pools.</li>
-                            <li>Completed algorithmic loops focusing on data cleansing, training steps, and visualization analytics.</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-950/80 px-6 py-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400">
-                        <span>Tools: Python, Data Cleansing, Supervised Classifiers</span>
-                    </div>
-                </div>
+          <!-- Web Front-End Card -->
+          <div
+            class="glass-panel p-6 rounded-xl hover:border-cyber-secondary/40 transition-colors group card-glow-cyan"
+          >
+            <div
+              class="w-12 h-12 rounded-lg bg-cyber-secondary/10 flex items-center justify-center text-cyber-secondary mb-4 group-hover:scale-110 transition-transform"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
             </div>
-        </section>
+            <h3 class="text-lg font-bold text-white mb-2 font-mono">
+              Front-End UI Design
+            </h3>
+            <p class="text-gray-400 text-sm">
+              Building fluid responsive layouts using HTML, CSS, and modern
+              JavaScript libraries. Highly experienced in translating
+              high-fidelity interactive wireframes into operational code.
+            </p>
+          </div>
 
-        <!-- Technology Stack and Academic Milestones -->
-        <section id="skills" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            <!-- Left Side: Tech Stack Specs -->
-            <div class="lg:col-span-7 glass-panel p-6 rounded-xl space-y-6">
-                <div class="border-b border-white/5 pb-3">
-                    <h3 class="text-lg font-bold text-white font-mono flex items-center space-x-2">
-                        <i class="fa-solid fa-microchip text-cyber-primary"></i>
-                        <span>PROGRAMMING_STACK_METRICS</span>
-                    </h3>
-                </div>
-
-                <div class="space-y-4 font-mono text-xs">
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>HTML5 / CSS3 / ES6 Vanilla JS (Web UI Development)</span>
-                            <span class="text-cyber-secondary">85%</span>
-                        </div>
-                        <div class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden">
-                            <div class="bg-cyber-secondary h-full rounded-full" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>Python (Object Oriented & Data Classifiers)</span>
-                            <span class="text-cyber-primary">80%</span>
-                        </div>
-                        <div class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden">
-                            <div class="bg-cyber-primary h-full rounded-full" style="width: 80%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>C++ (Fundamentals & Structural OOP Concepts)</span>
-                            <span class="text-cyber-accent">65%</span>
-                        </div>
-                        <div class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden">
-                            <div class="bg-cyber-accent h-full rounded-full" style="width: 65%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/5 pt-4 grid grid-cols-2 gap-4">
-                    <div>
-                        <span class="text-[10px] font-mono text-gray-500 uppercase block mb-2">Systems & Analysis</span>
-                        <div class="flex flex-wrap gap-1.5">
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">Linux Cmds</span>
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">Wireshark</span>
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">OSI Model</span>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-mono text-gray-500 uppercase block mb-2">Workspace Design</span>
-                        <div class="flex flex-wrap gap-1.5">
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">Figma UI</span>
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">Auto-Layout</span>
-                            <span class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5">Prototyping</span>
-                        </div>
-                    </div>
-                </div>
+          <!-- Networking & Security Card -->
+          <div
+            class="glass-panel p-6 rounded-xl hover:border-cyber-accent/40 transition-colors group card-glow-emerald"
+          >
+            <div
+              class="w-12 h-12 rounded-lg bg-cyber-accent/10 flex items-center justify-center text-cyber-accent mb-4 group-hover:scale-110 transition-transform"
+            >
+              <i class="fa-solid fa-shield-halved text-xl"></i>
             </div>
+            <h3 class="text-lg font-bold text-white mb-2 font-mono">
+              Secure Infrastructure
+            </h3>
+            <p class="text-gray-400 text-sm">
+              In-depth understanding of computer network structures, protocols
+              (OSI, TCP/IP), network packet analyzer platforms like Wireshark,
+              and Linux server workflows.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            <!-- Right Side: Academic Matrix -->
-            <div class="lg:col-span-5 glass-panel p-6 rounded-xl flex flex-col justify-between space-y-6">
-                <div class="border-b border-white/5 pb-3">
-                    <h3 class="text-lg font-bold text-white font-mono flex items-center space-x-2">
-                        <i class="fa-solid fa-graduation-cap text-cyber-secondary"></i>
-                        <span>ACADEMIC_SPECS_LOG</span>
-                    </h3>
+      <!-- Practical Work Timeline logs -->
+      <section id="experience" class="space-y-10">
+        <div class="border-l-4 border-cyber-secondary pl-4">
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono"
+          >
+            02. WORK_INTEGRATION_LOGS
+          </h2>
+          <p class="text-gray-500 text-xs sm:text-sm">
+            Verified professional internships and workspace assignments
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- UI/UX Developer Internship -->
+          <div
+            class="glass-panel rounded-xl overflow-hidden group hover:border-cyber-primary/40 transition-all duration-300 flex flex-col justify-between card-glow-violet"
+          >
+            <div class="p-6 space-y-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3
+                    class="text-xl font-bold text-white group-hover:text-cyber-primary transition-colors"
+                  >
+                    UI/UX Designer Intern
+                  </h3>
+                  <p class="text-sm text-cyber-secondary font-mono">
+                    Alo Infotech
+                  </p>
                 </div>
-
-                <div class="space-y-4 font-mono text-xs">
-                    <div class="relative pl-4 border-l-2 border-cyber-primary">
-                        <div class="flex items-center justify-between text-[10px] text-cyber-primary">
-                            <span>B.E. COMPUTER SCIENCE & ENG.</span>
-                            <span>2026 GRADS</span>
-                        </div>
-                        <h4 class="text-white font-bold mt-1 text-sm">Amrita College of Engineering</h4>
-                        <span class="text-gray-400">Score: 7.8 CGPA</span>
-                    </div>
-
-                    <div class="relative pl-4 border-l-2 border-cyber-secondary">
-                        <div class="flex items-center justify-between text-[10px] text-cyber-secondary">
-                            <span>HIGHER SECONDARY SCHOOL (HSC)</span>
-                            <span>2022</span>
-                        </div>
-                        <h4 class="text-white font-bold mt-1 text-sm">Vivekananda Matriculation</h4>
-                        <span class="text-gray-400">Score: 97% Marks</span>
-                    </div>
-
-                    <div class="relative pl-4 border-l-2 border-gray-700">
-                        <div class="flex items-center justify-between text-[10px] text-gray-500">
-                            <span>SECONDARY SCHOOL (SSLC)</span>
-                            <span>2020</span>
-                        </div>
-                        <h4 class="text-white font-bold mt-1 text-sm">Vivekananda Matriculation</h4>
-                        <span class="text-gray-400">Score: 76% Marks</span>
-                    </div>
-                </div>
+                <span
+                  class="bg-cyber-primary/10 text-cyber-primary border border-cyber-primary/20 px-2.5 py-1 rounded text-xs font-mono"
+                  >3 Weeks</span
+                >
+              </div>
+              <ul class="space-y-2 text-sm text-gray-400 list-disc list-inside">
+                <li>
+                  Acquired advanced expertise in Figma design ecosystems,
+                  components architecture, auto-layouts, and design tokens.
+                </li>
+                <li>
+                  Engineered highly interactive responsive UI wireframes
+                  ensuring clean layout alignments and pixel-perfect outputs.
+                </li>
+                <li>
+                  Applied agile product practices and coordinated with software
+                  teams during engineering handover procedures.
+                </li>
+              </ul>
             </div>
-        </section>
-
-        <!-- Interactive Project Showcase -->
-        <section id="projects" class="space-y-10">
-            <div class="border-l-4 border-cyber-primary pl-4">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">03. SMART_ATTENDANCE_CORE</h2>
-                <p class="text-gray-500 text-xs sm:text-sm">Integrated software modules and client predictive engines</p>
+            <div
+              class="bg-gray-950/80 px-6 py-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400"
+            >
+              <span>Tools: Figma, Auto-Layout, Responsive States</span>
             </div>
+          </div>
 
-            <div class="glass-panel rounded-xl overflow-hidden p-6 sm:p-8 relative flex flex-col lg:flex-row gap-8 items-center border border-white/10 shadow-2xl hover:border-cyber-primary/40 transition-all card-glow-violet">
-                <div class="space-y-4 lg:w-3/5">
-                    <div class="flex items-center space-x-2 text-xs font-mono text-cyber-primary">
-                        <i class="fa-solid fa-code-branch animate-spin text-xs"></i>
-                        <span>PYTHON &amp; MACHINE LEARNING UTILITY</span>
-                    </div>
-                    <h3 class="text-2xl font-extrabold text-white font-mono">Smart Attendance Predictor</h3>
-                    
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        A robust modern analytical application engineered to eliminate outdated manual records by compiling daily attendance streams in structured JSON datasets for analytical processing.
-                    </p>
-                    
-                    <div class="text-gray-300 text-xs bg-gray-950/80 p-3.5 rounded-lg border border-white/5 font-mono space-y-1">
-                        <span class="text-cyber-secondary font-bold block mb-1">Functional Architecture Summary:</span>
-                        <div>- Calculates total individual percentages and flags absence records.</div>
-                        <div>- Evaluates historical calendar logs to determine periodic variance.</div>
-                        <div>- Implements client-side models to output risk patterns for student rosters.</div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-1.5 pt-2">
-                        <span class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5">Python</span>
-                        <span class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5">ML Predictor</span>
-                        <span class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5">JSON Storage</span>
-                        <span class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5">Cohort Analyzer</span>
-                    </div>
+          <!-- Machine Learning & Python Internship -->
+          <div
+            class="glass-panel rounded-xl overflow-hidden group hover:border-cyber-secondary/40 transition-all duration-300 flex flex-col justify-between card-glow-cyan"
+          >
+            <div class="p-6 space-y-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3
+                    class="text-xl font-bold text-white group-hover:text-cyber-secondary transition-colors"
+                  >
+                    Python & ML Intern
+                  </h3>
+                  <p class="text-sm text-cyber-secondary font-mono">
+                    Srishti Innovative Computer Systems
+                  </p>
                 </div>
-
-                <!-- Interactive ML Prediction Tool -->
-                <div class="lg:w-2/5 w-full flex justify-center">
-                    <div class="bg-cyber-terminal/90 border border-white/10 rounded-xl p-5 w-full max-w-sm font-mono text-xs space-y-3 shadow-2xl">
-                        <div class="flex items-center justify-between border-b border-white/5 pb-2">
-                            <span class="text-white font-bold">attendance_predictor.py</span>
-                            <span class="text-cyber-accent font-bold flex items-center">
-                                <span class="w-2 h-2 rounded-full bg-cyber-accent mr-1.5 animate-ping"></span>ACTIVE
-                            </span>
-                        </div>
-
-                        <div>
-                            <label class="block text-gray-500 mb-1.5 text-[10px]">SELECT WEEKDAY TO FORECAST RISK:</label>
-                            <div class="grid grid-cols-5 gap-1 text-center">
-                                <button onclick="calculateRisk('Monday', 84)" class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5">MON</button>
-                                <button onclick="calculateRisk('Tuesday', 32)" class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5">TUE</button>
-                                <button onclick="calculateRisk('Wednesday', 18)" class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5">WED</button>
-                                <button onclick="calculateRisk('Thursday', 45)" class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5">THU</button>
-                                <button onclick="calculateRisk('Friday', 76)" class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5">FRI</button>
-                            </div>
-                        </div>
-
-                        <!-- Prediction Screen Output -->
-                        <div class="bg-gray-950/80 p-3 rounded-lg border border-white/5 space-y-2">
-                            <div class="flex justify-between text-gray-400 text-[10px]">
-                                <span>TARGET: <strong id="riskTarget" class="text-white">Monday</strong></span>
-                                <span>METRIC: <strong class="text-cyber-secondary">Precalculated</strong></span>
-                            </div>
-                            <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
-                                <div id="riskBar" class="bg-cyber-primary h-full transition-all duration-500" style="width: 84%"></div>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] text-gray-500">Predicted Absence Ratio:</span>
-                                <span id="riskPct" class="text-sm font-bold text-cyber-primary">84%</span>
-                            </div>
-                        </div>
-                        <div class="text-[9px] text-gray-500 text-right">Confidence Level: 94.2% (Test Loss 0.054)</div>
-                    </div>
-                </div>
+                <span
+                  class="bg-cyber-secondary/10 text-cyber-secondary border border-cyber-secondary/20 px-2.5 py-1 rounded text-xs font-mono"
+                  >6 Days Intensive</span
+                >
+              </div>
+              <ul class="space-y-2 text-sm text-gray-400 list-disc list-inside">
+                <li>
+                  Explored procedural Python syntax, dataset parsing tools, and
+                  predictive math structures.
+                </li>
+                <li>
+                  Implemented supervised machine learning classifiers designed
+                  to preprocess complex data pools.
+                </li>
+                <li>
+                  Completed algorithmic loops focusing on data cleansing,
+                  training steps, and visualization analytics.
+                </li>
+              </ul>
             </div>
-        </section>
-
-        <!-- Networking Competence & Tools section -->
-        <section id="network" class="space-y-10">
-            <div class="border-l-4 border-cyber-accent pl-4">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">04. SECURE_INFRASTRUCTURE</h2>
-                <p class="text-gray-500 text-xs sm:text-sm">Networking capabilities, configurations, and core protocol logs</p>
+            <div
+              class="bg-gray-950/80 px-6 py-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400"
+            >
+              <span>Tools: Python, Data Cleansing, Supervised Classifiers</span>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Core Protocol knowledge card -->
-                <div class="glass-panel p-6 rounded-xl space-y-4 hover:border-cyber-accent/40 transition-all card-glow-emerald">
-                    <h3 class="text-lg font-bold text-white font-mono flex items-center space-x-2">
-                        <i class="fa-solid fa-server text-cyber-accent"></i>
-                        <span>IT Architecture & Protocols</span>
-                    </h3>
-                    <p class="text-sm text-gray-400">
-                        Competent with core networking infrastructures including LAN/WAN architectures, OSI & TCP/IP models, IP addressing schemes, and secure subnet segmentation practices.
-                    </p>
-                    <ul class="space-y-1.5 text-xs text-gray-400 font-mono">
-                        <li><i class="fa-solid fa-square-rss mr-2 text-cyber-accent"></i>Addressing: Subnetting, IP Classes, CIDR Blocks</li>
-                        <li><i class="fa-solid fa-circle-nodes mr-2 text-cyber-accent"></i>Core Protocols: DNS routing, DHCP assignment, Gateways</li>
-                        <li><i class="fa-solid fa-bug-slash mr-2 text-cyber-accent"></i>Troubleshooting: Network trace pathways, ping validation</li>
-                    </ul>
-                </div>
+      <!-- Technology Stack and Academic Milestones -->
+      <section
+        id="skills"
+        class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
+      >
+        <!-- Left Side: Tech Stack Specs -->
+        <div class="lg:col-span-7 glass-panel p-6 rounded-xl space-y-6">
+          <div class="border-b border-white/5 pb-3">
+            <h3
+              class="text-lg font-bold text-white font-mono flex items-center space-x-2"
+            >
+              <i class="fa-solid fa-microchip text-cyber-primary"></i>
+              <span>PROGRAMMING_STACK_METRICS</span>
+            </h3>
+          </div>
 
-                <!-- Infrastructure tools card -->
-                <div class="glass-panel p-6 rounded-xl space-y-4 hover:border-cyber-accent/40 transition-all card-glow-emerald">
-                    <h3 class="text-lg font-bold text-white font-mono flex items-center space-x-2">
-                        <i class="fa-solid fa-magnifying-glass-chart text-cyber-accent"></i>
-                        <span>Network Inspection Utilities</span>
-                    </h3>
-                    <p class="text-sm text-gray-400">
-                        Equipped with critical utility platforms for assessing secure data tunnels and validating communication security interfaces.
-                    </p>
-                    <div class="grid grid-cols-2 gap-3 pt-1">
-                        <div class="bg-gray-950/80 p-3 rounded-lg border border-white/5 font-mono text-center">
-                            <i class="fa-solid fa-network-wired text-cyber-accent mb-1.5 text-lg"></i>
-                            <div class="text-[11px] text-white font-bold">Wireshark</div>
-                            <span class="text-[9px] text-gray-500">Packet Parsing</span>
-                        </div>
-                        <div class="bg-gray-950/80 p-3 rounded-lg border border-white/5 font-mono text-center">
-                            <i class="fa-brands fa-linux text-cyber-accent mb-1.5 text-lg"></i>
-                            <div class="text-[11px] text-white font-bold">Linux Terminal</div>
-                            <span class="text-[9px] text-gray-500">Shell Commands</span>
-                        </div>
-                    </div>
-                </div>
+          <div class="space-y-4 font-mono text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>HTML5 / CSS3 / ES6 Vanilla JS (Web UI Development)</span>
+                <span class="text-cyber-secondary">85%</span>
+              </div>
+              <div
+                class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden"
+              >
+                <div
+                  class="bg-cyber-secondary h-full rounded-full"
+                  style="width: 85%"
+                ></div>
+              </div>
             </div>
-        </section>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>Python (Object Oriented & Data Classifiers)</span>
+                <span class="text-cyber-primary">80%</span>
+              </div>
+              <div
+                class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden"
+              >
+                <div
+                  class="bg-cyber-primary h-full rounded-full"
+                  style="width: 80%"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span>C++ (Fundamentals & Structural OOP Concepts)</span>
+                <span class="text-cyber-accent">65%</span>
+              </div>
+              <div
+                class="w-full h-1.5 bg-gray-900/80 rounded-full overflow-hidden"
+              >
+                <div
+                  class="bg-cyber-accent h-full rounded-full"
+                  style="width: 65%"
+                ></div>
+              </div>
+            </div>
+          </div>
 
-        <!-- Languages & Locations -->
-        <section id="languages" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Geographical Location Card -->
-            <div class="glass-panel p-6 rounded-xl flex items-center justify-between border border-white/10 shadow-lg card-glow-violet">
-                <div class="space-y-1.5 font-mono">
-                    <span class="text-[10px] text-gray-500 block">SYSTEM_GEOLOCATION</span>
-                    <h4 class="text-white font-bold text-base">Kanyakumari, Tamil Nadu, India</h4>
-                    <p class="text-xs text-gray-400">Ready to relocate for active developer positions.</p>
-                </div>
-                <div class="w-12 h-12 bg-cyber-primary/10 rounded-xl flex items-center justify-center text-cyber-primary">
-                    <i class="fa-solid fa-map-location-dot text-xl"></i>
-                </div>
+          <div class="border-t border-white/5 pt-4 grid grid-cols-2 gap-4">
+            <div>
+              <span
+                class="text-[10px] font-mono text-gray-500 uppercase block mb-2"
+                >Systems & Analysis</span
+              >
+              <div class="flex flex-wrap gap-1.5">
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >Linux Cmds</span
+                >
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >Wireshark</span
+                >
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >OSI Model</span
+                >
+              </div>
+            </div>
+            <div>
+              <span
+                class="text-[10px] font-mono text-gray-500 uppercase block mb-2"
+                >Workspace Design</span
+              >
+              <div class="flex flex-wrap gap-1.5">
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >Figma UI</span
+                >
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >Auto-Layout</span
+                >
+                <span
+                  class="bg-gray-950 px-2 py-1 text-[10px] font-mono text-gray-300 rounded border border-white/5"
+                  >Prototyping</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Academic Matrix -->
+        <div
+          class="lg:col-span-5 glass-panel p-6 rounded-xl flex flex-col justify-between space-y-6"
+        >
+          <div class="border-b border-white/5 pb-3">
+            <h3
+              class="text-lg font-bold text-white font-mono flex items-center space-x-2"
+            >
+              <i class="fa-solid fa-graduation-cap text-cyber-secondary"></i>
+              <span>ACADEMIC_SPECS_LOG</span>
+            </h3>
+          </div>
+
+          <div class="space-y-4 font-mono text-xs">
+            <div class="relative pl-4 border-l-2 border-cyber-primary">
+              <div
+                class="flex items-center justify-between text-[10px] text-cyber-primary"
+              >
+                <span>B.E. COMPUTER SCIENCE & ENG.</span>
+                <span>2026 GRADS</span>
+              </div>
+              <h4 class="text-white font-bold mt-1 text-sm">
+                Amrita College of Engineering
+              </h4>
+              <span class="text-gray-400">Score: 7.8 CGPA</span>
             </div>
 
-            <!-- Language Proficiencies Card -->
-            <div class="glass-panel p-6 rounded-xl space-y-3 border border-white/10 shadow-lg card-glow-cyan">
-                <span class="text-[10px] font-mono text-gray-500 block">HUMAN_LANGUAGE_METRICS</span>
-                <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs">
-                    <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
-                        <div class="text-white font-bold text-xs">Tamil</div>
-                        <span class="text-[9px] text-cyber-secondary">Native Tongue</span>
-                    </div>
-                    <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
-                        <div class="text-white font-bold text-xs">English</div>
-                        <span class="text-[9px] text-cyber-secondary">Professional</span>
-                    </div>
-                    <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
-                        <div class="text-white font-bold text-xs">Malayalam</div>
-                        <span class="text-[9px] text-cyber-secondary">Conversational</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Establish Connection Contact section -->
-        <section id="contact" class="space-y-10">
-            <div class="border-l-4 border-cyber-primary pl-4">
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">05. ESTABLISH_CONNECTION</h2>
-                <p class="text-gray-500 text-xs sm:text-sm">Establish verified contact pathways with active developer nodes</p>
+            <div class="relative pl-4 border-l-2 border-cyber-secondary">
+              <div
+                class="flex items-center justify-between text-[10px] text-cyber-secondary"
+              >
+                <span>HIGHER SECONDARY SCHOOL (HSC)</span>
+                <span>2022</span>
+              </div>
+              <h4 class="text-white font-bold mt-1 text-sm">
+                Vivekananda Matriculation
+              </h4>
+              <span class="text-gray-400">Score: 76% Marks</span>
             </div>
 
-            <div class="glass-panel rounded-xl p-8 max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center justify-between border border-white/10 shadow-2xl relative overflow-hidden">
-                <div class="absolute -right-32 -bottom-32 w-64 h-64 bg-cyber-primary/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div class="space-y-4 md:w-1/2">
-                    <h3 class="text-2xl font-extrabold text-white font-mono">Secure Connection Interface</h3>
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        Currently seeking software developer internships, entry-level engineering apprenticeships, and technical IT support tracks. Let's set up an introductory discussion.
-                    </p>
-                </div>
-
-                <div class="space-y-3 w-full md:w-auto font-mono text-xs sm:text-sm">
-                    <!-- Email address details -->
-                    <div class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg hover:border-cyber-primary/40 transition-colors">
-                        <i class="fa-solid fa-envelope text-cyber-primary text-lg"></i>
-                        <div>
-                            <div class="text-[9px] text-gray-500">EMAIL_ADDRESS</div>
-                            <a href="mailto:snishanthnishanths5@gmail.com" class="text-white hover:underline text-xs sm:text-sm">snishanthnishanths5@gmail.com</a>
-                        </div>
-                    </div>
-
-                    <!-- Direct Voice connection -->
-                    <div class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg hover:border-cyber-primary/40 transition-colors">
-                        <i class="fa-solid fa-phone text-cyber-primary text-lg"></i>
-                        <div>
-                            <div class="text-[9px] text-gray-500">VOICE_DIAL</div>
-                            <a href="tel:+919786350933" class="text-white hover:underline text-xs sm:text-sm">+91 9786350933</a>
-                        </div>
-                    </div>
-
-                    <!-- Location coordinates -->
-                    <div class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg">
-                        <i class="fa-solid fa-location-dot text-cyber-primary text-lg"></i>
-                        <div>
-                            <div class="text-[9px] text-gray-500">COORDINATE</div>
-                            <span class="text-white text-xs sm:text-sm">Kanyakumari, Tamil Nadu</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="relative pl-4 border-l-2 border-gray-700">
+              <div
+                class="flex items-center justify-between text-[10px] text-gray-500"
+              >
+                <span>SECONDARY SCHOOL (SSLC)</span>
+                <span>2020</span>
+              </div>
+              <h4 class="text-white font-bold mt-1 text-sm">
+                Vivekananda Matriculation
+              </h4>
+              <span class="text-gray-400">Score: 97% Marks</span>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
+      <!-- Interactive Project Showcase -->
+      <section id="projects" class="space-y-10">
+        <div class="border-l-4 border-cyber-primary pl-4">
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono"
+          >
+            03. SMART_ATTENDANCE_CORE
+          </h2>
+          <p class="text-gray-500 text-xs sm:text-sm">
+            Integrated software modules and client predictive engines
+          </p>
+        </div>
+
+        <div
+          class="glass-panel rounded-xl overflow-hidden p-6 sm:p-8 relative flex flex-col lg:flex-row gap-8 items-center border border-white/10 shadow-2xl hover:border-cyber-primary/40 transition-all card-glow-violet"
+        >
+          <div class="space-y-4 lg:w-3/5">
+            <div
+              class="flex items-center space-x-2 text-xs font-mono text-cyber-primary"
+            >
+              <i class="fa-solid fa-code-branch animate-spin text-xs"></i>
+              <span>PYTHON &amp; MACHINE LEARNING UTILITY</span>
+            </div>
+            <h3 class="text-2xl font-extrabold text-white font-mono">
+              Smart Attendance Predictor
+            </h3>
+
+            <p class="text-gray-300 text-sm leading-relaxed">
+              A robust modern analytical application engineered to eliminate
+              outdated manual records by compiling daily attendance streams in
+              structured JSON datasets for analytical processing.
+            </p>
+
+            <div
+              class="text-gray-300 text-xs bg-gray-950/80 p-3.5 rounded-lg border border-white/5 font-mono space-y-1"
+            >
+              <span class="text-cyber-secondary font-bold block mb-1"
+                >Functional Architecture Summary:</span
+              >
+              <div>
+                - Calculates total individual percentages and flags absence
+                records.
+              </div>
+              <div>
+                - Evaluates historical calendar logs to determine periodic
+                variance.
+              </div>
+              <div>
+                - Implements client-side models to output risk patterns for
+                student rosters.
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 pt-2">
+              <span
+                class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5"
+                >Python</span
+              >
+              <span
+                class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5"
+                >ML Predictor</span
+              >
+              <span
+                class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5"
+                >JSON Storage</span
+              >
+              <span
+                class="bg-gray-950 px-2.5 py-1 text-xs font-mono text-gray-300 rounded border border-white/5"
+                >Cohort Analyzer</span
+              >
+            </div>
+          </div>
+
+          <!-- Interactive ML Prediction Tool -->
+          <div class="lg:w-2/5 w-full flex justify-center">
+            <div
+              class="bg-cyber-terminal/90 border border-white/10 rounded-xl p-5 w-full max-w-sm font-mono text-xs space-y-3 shadow-2xl"
+            >
+              <div
+                class="flex items-center justify-between border-b border-white/5 pb-2"
+              >
+                <span class="text-white font-bold"
+                  >attendance_predictor.py</span
+                >
+                <span class="text-cyber-accent font-bold flex items-center">
+                  <span
+                    class="w-2 h-2 rounded-full bg-cyber-accent mr-1.5 animate-ping"
+                  ></span
+                  >ACTIVE
+                </span>
+              </div>
+
+              <div>
+                <label class="block text-gray-500 mb-1.5 text-[10px]"
+                  >SELECT WEEKDAY TO FORECAST RISK:</label
+                >
+                <div class="grid grid-cols-5 gap-1 text-center">
+                  <button
+                    onclick="calculateRisk('Monday', 84)"
+                    class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5"
+                  >
+                    MON
+                  </button>
+                  <button
+                    onclick="calculateRisk('Tuesday', 32)"
+                    class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5"
+                  >
+                    TUE
+                  </button>
+                  <button
+                    onclick="calculateRisk('Wednesday', 18)"
+                    class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5"
+                  >
+                    WED
+                  </button>
+                  <button
+                    onclick="calculateRisk('Thursday', 45)"
+                    class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5"
+                  >
+                    THU
+                  </button>
+                  <button
+                    onclick="calculateRisk('Friday', 76)"
+                    class="bg-gray-950 hover:bg-cyber-primary hover:text-white p-1 rounded text-[10px] text-gray-300 border border-white/5"
+                  >
+                    FRI
+                  </button>
+                </div>
+              </div>
+
+              <!-- Prediction Screen Output -->
+              <div
+                class="bg-gray-950/80 p-3 rounded-lg border border-white/5 space-y-2"
+              >
+                <div class="flex justify-between text-gray-400 text-[10px]">
+                  <span
+                    >TARGET:
+                    <strong id="riskTarget" class="text-white"
+                      >Monday</strong
+                    ></span
+                  >
+                  <span
+                    >METRIC:
+                    <strong class="text-cyber-secondary"
+                      >Precalculated</strong
+                    ></span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-900 h-2 rounded-full overflow-hidden"
+                >
+                  <div
+                    id="riskBar"
+                    class="bg-cyber-primary h-full transition-all duration-500"
+                    style="width: 84%"
+                  ></div>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-[10px] text-gray-500"
+                    >Predicted Absence Ratio:</span
+                  >
+                  <span
+                    id="riskPct"
+                    class="text-sm font-bold text-cyber-primary"
+                    >84%</span
+                  >
+                </div>
+              </div>
+              <div class="text-[9px] text-gray-500 text-right">
+                Confidence Level: 94.2% (Test Loss 0.054)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Networking Competence & Tools section -->
+      <section id="network" class="space-y-10">
+        <div class="border-l-4 border-cyber-accent pl-4">
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono"
+          >
+            04. SECURE_INFRASTRUCTURE
+          </h2>
+          <p class="text-gray-500 text-xs sm:text-sm">
+            Networking capabilities, configurations, and core protocol logs
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Core Protocol knowledge card -->
+          <div
+            class="glass-panel p-6 rounded-xl space-y-4 hover:border-cyber-accent/40 transition-all card-glow-emerald"
+          >
+            <h3
+              class="text-lg font-bold text-white font-mono flex items-center space-x-2"
+            >
+              <i class="fa-solid fa-server text-cyber-accent"></i>
+              <span>IT Architecture & Protocols</span>
+            </h3>
+            <p class="text-sm text-gray-400">
+              Competent with core networking infrastructures including LAN/WAN
+              architectures, OSI & TCP/IP models, IP addressing schemes, and
+              secure subnet segmentation practices.
+            </p>
+            <ul class="space-y-1.5 text-xs text-gray-400 font-mono">
+              <li>
+                <i class="fa-solid fa-square-rss mr-2 text-cyber-accent"></i
+                >Addressing: Subnetting, IP Classes, CIDR Blocks
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-nodes mr-2 text-cyber-accent"></i
+                >Core Protocols: DNS routing, DHCP assignment, Gateways
+              </li>
+              <li>
+                <i class="fa-solid fa-bug-slash mr-2 text-cyber-accent"></i
+                >Troubleshooting: Network trace pathways, ping validation
+              </li>
+            </ul>
+          </div>
+
+          <!-- Infrastructure tools card -->
+          <div
+            class="glass-panel p-6 rounded-xl space-y-4 hover:border-cyber-accent/40 transition-all card-glow-emerald"
+          >
+            <h3
+              class="text-lg font-bold text-white font-mono flex items-center space-x-2"
+            >
+              <i
+                class="fa-solid fa-magnifying-glass-chart text-cyber-accent"
+              ></i>
+              <span>Network Inspection Utilities</span>
+            </h3>
+            <p class="text-sm text-gray-400">
+              Equipped with critical utility platforms for assessing secure data
+              tunnels and validating communication security interfaces.
+            </p>
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div
+                class="bg-gray-950/80 p-3 rounded-lg border border-white/5 font-mono text-center"
+              >
+                <i
+                  class="fa-solid fa-network-wired text-cyber-accent mb-1.5 text-lg"
+                ></i>
+                <div class="text-[11px] text-white font-bold">Wireshark</div>
+                <span class="text-[9px] text-gray-500">Packet Parsing</span>
+              </div>
+              <div
+                class="bg-gray-950/80 p-3 rounded-lg border border-white/5 font-mono text-center"
+              >
+                <i
+                  class="fa-brands fa-linux text-cyber-accent mb-1.5 text-lg"
+                ></i>
+                <div class="text-[11px] text-white font-bold">
+                  Linux Terminal
+                </div>
+                <span class="text-[9px] text-gray-500">Shell Commands</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Languages & Locations -->
+      <section id="languages" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Geographical Location Card -->
+        <div
+          class="glass-panel p-6 rounded-xl flex items-center justify-between border border-white/10 shadow-lg card-glow-violet"
+        >
+          <div class="space-y-1.5 font-mono">
+            <span class="text-[10px] text-gray-500 block"
+              >SYSTEM_GEOLOCATION</span
+            >
+            <h4 class="text-white font-bold text-base">
+              Kanyakumari, Tamil Nadu, India
+            </h4>
+            <p class="text-xs text-gray-400">
+              Ready to relocate for active developer positions.
+            </p>
+          </div>
+          <div
+            class="w-12 h-12 bg-cyber-primary/10 rounded-xl flex items-center justify-center text-cyber-primary"
+          >
+            <i class="fa-solid fa-map-location-dot text-xl"></i>
+          </div>
+        </div>
+
+        <!-- Language Proficiencies Card -->
+        <div
+          class="glass-panel p-6 rounded-xl space-y-3 border border-white/10 shadow-lg card-glow-cyan"
+        >
+          <span class="text-[10px] font-mono text-gray-500 block"
+            >HUMAN_LANGUAGE_METRICS</span
+          >
+          <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs">
+            <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
+              <div class="text-white font-bold text-xs">Tamil</div>
+              <span class="text-[9px] text-cyber-secondary">Native Tongue</span>
+            </div>
+            <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
+              <div class="text-white font-bold text-xs">English</div>
+              <span class="text-[9px] text-cyber-secondary">Professional</span>
+            </div>
+            <div class="bg-gray-950/80 p-2 rounded-lg border border-white/5">
+              <div class="text-white font-bold text-xs">Malayalam</div>
+              <span class="text-[9px] text-cyber-secondary"
+                >Conversational</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Establish Connection Contact section -->
+      <section id="contact" class="space-y-10">
+        <div class="border-l-4 border-cyber-primary pl-4">
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono"
+          >
+            05. ESTABLISH_CONNECTION
+          </h2>
+          <p class="text-gray-500 text-xs sm:text-sm">
+            Establish verified contact pathways with active developer nodes
+          </p>
+        </div>
+
+        <div
+          class="glass-panel rounded-xl p-8 max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center justify-between border border-white/10 shadow-2xl relative overflow-hidden"
+        >
+          <div
+            class="absolute -right-32 -bottom-32 w-64 h-64 bg-cyber-primary/10 rounded-full blur-3xl pointer-events-none"
+          ></div>
+
+          <div class="space-y-4 md:w-1/2">
+            <h3 class="text-2xl font-extrabold text-white font-mono">
+              Secure Connection Interface
+            </h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Currently seeking software developer internships, entry-level
+              engineering apprenticeships, and technical IT support tracks.
+              Let's set up an introductory discussion.
+            </p>
+          </div>
+
+          <div class="space-y-3 w-full md:w-auto font-mono text-xs sm:text-sm">
+            <!-- Email address details -->
+            <div
+              class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg hover:border-cyber-primary/40 transition-colors"
+            >
+              <i class="fa-solid fa-envelope text-cyber-primary text-lg"></i>
+              <div>
+                <div class="text-[9px] text-gray-500">EMAIL_ADDRESS</div>
+                <a
+                  href="mailto:snishanthnishanths5@gmail.com"
+                  class="text-white hover:underline text-xs sm:text-sm"
+                  >snishanthnishanths5@gmail.com</a
+                >
+              </div>
+            </div>
+
+            <!-- Direct Voice connection -->
+            <div
+              class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg hover:border-cyber-primary/40 transition-colors"
+            >
+              <i class="fa-solid fa-phone text-cyber-primary text-lg"></i>
+              <div>
+                <div class="text-[9px] text-gray-500">VOICE_DIAL</div>
+                <a
+                  href="tel:+919786350933"
+                  class="text-white hover:underline text-xs sm:text-sm"
+                  >+91 9786350933</a
+                >
+              </div>
+            </div>
+
+            <!-- Location coordinates -->
+            <div
+              class="flex items-center space-x-3 bg-cyber-terminal border border-white/5 p-3 rounded-lg"
+            >
+              <i
+                class="fa-solid fa-location-dot text-cyber-primary text-lg"
+              ></i>
+              <div>
+                <div class="text-[9px] text-gray-500">COORDINATE</div>
+                <span class="text-white text-xs sm:text-sm"
+                  >Kanyakumari, Tamil Nadu</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Interactive Verbatim Document View modal (Nishanth .resume.pdf mock viewer) -->
-    <div id="resume-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="glass-panel rounded-xl max-w-2xl w-full border border-white/20 shadow-2xl flex flex-col overflow-hidden animate-pulse-active">
-            <!-- Window title bar -->
-            <div class="bg-cyber-terminal px-4 py-3 flex items-center justify-between border-b border-white/10 font-mono text-xs">
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    <span class="text-white font-bold ml-2">Nishanth .resume.pdf (VERBATIM VIEW)</span>
-                </div>
-                <button onclick="toggleResumeModal()" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa-solid fa-times text-sm"></i>
-                </button>
-            </div>
-            
-            <!-- Window document simulation -->
-            <div class="p-6 overflow-y-auto max-h-[70vh] space-y-6 font-mono text-xs text-gray-300">
-                <div class="border-b border-white/10 pb-4 text-center">
-                    <h3 class="text-xl font-bold text-white uppercase tracking-wider">NISHANTH S</h3>
-                    <p class="text-cyber-secondary mt-1">snishanthnishanths5@gmail.com | 9786350933</p>
-                    <p class="text-gray-500 mt-0.5">Kanyakumari, Tamil Nadu</p>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between">
-                        <span>CAREER OBJECTIVE</span>
-                        <i class="fa-solid fa-bullseye text-cyber-primary"></i>
-                    </h4>
-                    <p class="text-gray-400 leading-relaxed">
-                        Motivated Computer Science Engineering student with a strong interest in Networking, Cybersecurity, and IT Infrastructure, seeking an entry-level role as a Network Engineer / IT Support / Security Analyst. Passionate about configuring networks, troubleshooting systems, and ensuring secure and efficient data communication. Eager to apply technical knowledge and continuously learn emerging networking technologies.
-                    </p>
-                </div>
-
-                <div class="space-y-4">
-                    <h4 class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between">
-                        <span>INTERNSHIPS</span>
-                        <i class="fa-solid fa-briefcase text-cyber-secondary"></i>
-                    </h4>
-                    
-                    <div class="space-y-2">
-                        <div class="flex justify-between font-bold text-white">
-                            <span>Python & Machine Learning Intern</span>
-                            <span class="text-cyber-secondary">6 Days</span>
-                        </div>
-                        <p class="text-gray-400">Srishti Innovative Computer Systems</p>
-                        <ul class="list-disc list-inside text-gray-400 space-y-1 pl-2">
-                            <li>Gained hands-on experience in Python programming and applied machine learning algorithms to solve real-world problems.</li>
-                            <li>Worked on data preprocessing, model training, and evaluation to improve accuracy and insights.</li>
-                        </ul>
-                    </div>
-
-                    <div class="space-y-2 pt-2">
-                        <div class="flex justify-between font-bold text-white">
-                            <span>UI/UX Design Intern</span>
-                            <span class="text-cyber-secondary">3 Weeks</span>
-                        </div>
-                        <p class="text-gray-400">Alo Infotech</p>
-                        <ul class="list-disc list-inside text-gray-400 space-y-1 pl-2">
-                            <li>Mastered Figma essentials, including auto-layout, components, and prototyping, to build scalable and responsive design assets.</li>
-                            <li>Gained Practical exposure to industry-standard design workflows, translating conceptual ideas into interactive digital interfaces.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <h4 class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between">
-                        <span>EDUCATION</span>
-                        <i class="fa-solid fa-graduation-cap text-cyber-accent"></i>
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
-                            <div class="font-bold text-white">B.E. CSE</div>
-                            <div class="text-gray-400 text-[10px]">Amrita College (2026)</div>
-                            <div class="text-cyber-accent font-bold mt-1">7.8 CGPA</div>
-                        </div>
-                        <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
-                            <div class="font-bold text-white">HSC - CS</div>
-                            <div class="text-gray-400 text-[10px]">Vivekananda School (2022)</div>
-                            <div class="text-cyber-accent font-bold mt-1">97% Marks</div>
-                        </div>
-                        <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
-                            <div class="font-bold text-white">SSLC</div>
-                            <div class="text-gray-400 text-[10px]">Vivekananda School (2020)</div>
-                            <div class="text-cyber-accent font-bold mt-1">76% Marks</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between">
-                        <span>PROJECTS - SMART ATTENDANCE SYSTEM</span>
-                        <i class="fa-solid fa-folder-open text-yellow-500"></i>
-                    </h4>
-                    <p class="text-gray-400 leading-relaxed">
-                        The system digitally records and manages student attendance data using a structured format, making it easy to store and retrieve attendance information. Attendance records are analyzed to calculate attendance percentages and identify patterns such as frequent absences on specific days. Basic machine learning techniques are used to predict future attendance trends based on historical data.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Modal footer actions -->
-            <div class="bg-cyber-terminal/90 p-4 border-t border-white/10 flex justify-between items-center font-mono text-xs">
-                <span class="text-gray-500">Reference verbatim: "Nishanth .resume.pdf"</span>
-                <button onclick="toggleResumeModal()" class="bg-cyber-primary hover:bg-cyber-primary/80 text-white font-bold px-4 py-2 rounded transition-colors">
-                    CLOSE_PREVIEW
-                </button>
-            </div>
+    <div
+      id="resume-modal"
+      class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="glass-panel rounded-xl max-w-2xl w-full border border-white/20 shadow-2xl flex flex-col overflow-hidden animate-pulse-active"
+      >
+        <!-- Window title bar -->
+        <div
+          class="bg-cyber-terminal px-4 py-3 flex items-center justify-between border-b border-white/10 font-mono text-xs"
+        >
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+            <span class="text-white font-bold ml-2"
+              >Nishanth .resume.pdf (VERBATIM VIEW)</span
+            >
+          </div>
+          <button
+            onclick="toggleResumeModal()"
+            class="text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fa-solid fa-times text-sm"></i>
+          </button>
         </div>
+
+        <!-- Window document simulation -->
+        <div
+          class="p-6 overflow-y-auto max-h-[70vh] space-y-6 font-mono text-xs text-gray-300"
+        >
+          <div class="border-b border-white/10 pb-4 text-center">
+            <h3 class="text-xl font-bold text-white uppercase tracking-wider">
+              NISHANTH S
+            </h3>
+            <p class="text-cyber-secondary mt-1">
+              snishanthnishanths5@gmail.com | 9786350933
+            </p>
+            <p class="text-gray-500 mt-0.5">Kanyakumari, Tamil Nadu</p>
+          </div>
+
+          <div class="space-y-2">
+            <h4
+              class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between"
+            >
+              <span>CAREER OBJECTIVE</span>
+              <i class="fa-solid fa-bullseye text-cyber-primary"></i>
+            </h4>
+            <p class="text-gray-400 leading-relaxed">
+              Ambitious Computer Science Engineering graduate aiming to secure a
+              Software Developer position. Brings hands-on experience in
+              full-cycle project development, from front-end design workflows to
+              back-end logic and machine learning implementation. Eager to
+              contribute logical thinking, strong problem-solving skills, and a
+              fast-learning mindset to a dynamic development team
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <h4
+              class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between"
+            >
+              <span>INTERNSHIPS</span>
+              <i class="fa-solid fa-briefcase text-cyber-secondary"></i>
+            </h4>
+
+            <div class="space-y-2">
+              <div class="flex justify-between font-bold text-white">
+                <span>Python & Machine Learning Intern</span>
+                <span class="text-cyber-secondary">6 Days</span>
+              </div>
+              <p class="text-gray-400">Srishti Innovative Computer Systems</p>
+              <ul class="list-disc list-inside text-gray-400 space-y-1 pl-2">
+                <li>
+                  Gained hands-on experience in Python programming and applied
+                  machine learning algorithms to solve real-world problems.
+                </li>
+                <li>
+                  Worked on data preprocessing, model training, and evaluation
+                  to improve accuracy and insights.
+                </li>
+              </ul>
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <div class="flex justify-between font-bold text-white">
+                <span>UI/UX Design Intern</span>
+                <span class="text-cyber-secondary">3 Weeks</span>
+              </div>
+              <p class="text-gray-400">Alo Infotech</p>
+              <ul class="list-disc list-inside text-gray-400 space-y-1 pl-2">
+                <li>
+                  Mastered Figma essentials, including auto-layout, components,
+                  and prototyping, to build scalable and responsive design
+                  assets.
+                </li>
+                <li>
+                  Gained Practical exposure to industry-standard design
+                  workflows, translating conceptual ideas into interactive
+                  digital interfaces.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h4
+              class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between"
+            >
+              <span>EDUCATION</span>
+              <i class="fa-solid fa-graduation-cap text-cyber-accent"></i>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
+                <div class="font-bold text-white">B.E. CSE</div>
+                <div class="text-gray-400 text-[10px]">
+                  Amrita College (2026)
+                </div>
+                <div class="text-cyber-accent font-bold mt-1">7.8 CGPA</div>
+              </div>
+              <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
+                <div class="font-bold text-white">HSC - CS</div>
+                <div class="text-gray-400 text-[10px]">
+                  Vivekananda School (2022)
+                </div>
+                <div class="text-cyber-accent font-bold mt-1">76% Marks</div>
+              </div>
+              <div class="bg-gray-950 p-3 rounded-lg border border-white/5">
+                <div class="font-bold text-white">SSLC</div>
+                <div class="text-gray-400 text-[10px]">
+                  Vivekananda School (2020)
+                </div>
+                <div class="text-cyber-accent font-bold mt-1">97% Marks</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h4
+              class="text-white font-bold text-sm border-b border-white/10 pb-1 flex items-center justify-between"
+            >
+              <span>PROJECTS - SMART ATTENDANCE SYSTEM</span>
+              <i class="fa-solid fa-folder-open text-yellow-500"></i>
+            </h4>
+            <p class="text-gray-400 leading-relaxed">
+              The system digitally records and manages student attendance data
+              using a structured format, making it easy to store and retrieve
+              attendance information. Attendance records are analyzed to
+              calculate attendance percentages and identify patterns such as
+              frequent absences on specific days. Basic machine learning
+              techniques are used to predict future attendance trends based on
+              historical data.
+            </p>
+          </div>
+        </div>
+
+        <!-- Modal footer actions -->
+        <div
+          class="bg-cyber-terminal/90 p-4 border-t border-white/10 flex justify-between items-center font-mono text-xs"
+        >
+          <span class="text-gray-500"
+            >Reference verbatim: "Nishanth .resume.pdf"</span
+          >
+          <button
+            onclick="toggleResumeModal()"
+            class="bg-cyber-primary hover:bg-cyber-primary/80 text-white font-bold px-4 py-2 rounded transition-colors"
+          >
+            CLOSE_PREVIEW
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Responsive Footer Panel -->
     <footer class="border-t border-white/5 bg-cyber-bg py-8 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-500">
-            <div>
-                © 2026 Nishanth S. Built using Three.js & Tailwind CSS.
-            </div>
-            <div class="flex space-x-4">
-                <span>ENVIRONMENT: <span class="text-cyber-accent">PRODUCTION</span></span>
-                <span>LATENCY: <span class="text-cyber-secondary">4ms</span></span>
-            </div>
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-500"
+      >
+        <div>© 2026 Nishanth S. Built using Three.js & Tailwind CSS.</div>
+        <div class="flex space-x-4">
+          <span
+            >ENVIRONMENT:
+            <span class="text-cyber-accent">PRODUCTION</span></span
+          >
+          <span>LATENCY: <span class="text-cyber-secondary">4ms</span></span>
         </div>
+      </div>
     </footer>
 
     <!-- WebGL Engine and Custom Terminal / Predictive Analytics logic -->
     <script>
-        // --- 1. Three.js interactive WebGL Particle Simulator ---
-        let scene, camera, renderer, particleSystem;
-        const particleCount = 800;
-        let positions = [];
-        let currentPos, targetPos;
-        let activeMorphIndex = 0; // 0: Helix, 1: Sphere, 2: Grid, 3: Wave, 4: Ring
+      // --- 1. Three.js interactive WebGL Particle Simulator ---
+      let scene, camera, renderer, particleSystem;
+      const particleCount = 800;
+      let positions = [];
+      let currentPos, targetPos;
+      let activeMorphIndex = 0; // 0: Helix, 1: Sphere, 2: Grid, 3: Wave, 4: Ring
 
-        // Precalculated shape position coordinates
-        const morphTargets = {
-            0: [], // Double Helix
-            1: [], // Sphere
-            2: [], // Matrix Grid
-            3: [], // Wave Form
-            4: []  // Quantum Ring
-        };
+      // Precalculated shape position coordinates
+      const morphTargets = {
+        0: [], // Double Helix
+        1: [], // Sphere
+        2: [], // Matrix Grid
+        3: [], // Wave Form
+        4: [], // Quantum Ring
+      };
 
-        let targetVelocity = 0.01;
-        let baseSpeedModifier = 1.0;
-        let rotationAngleX = 0;
-        let rotationAngleY = 0;
+      let targetVelocity = 0.01;
+      let baseSpeedModifier = 1.0;
+      let rotationAngleX = 0;
+      let rotationAngleY = 0;
 
-        // Custom Mouse interactions variables
-        let isMouseDown = false;
-        let prevMouseX = 0;
-        let prevMouseY = 0;
+      // Custom Mouse interactions variables
+      let isMouseDown = false;
+      let prevMouseX = 0;
+      let prevMouseY = 0;
 
-        function initThreeEngine() {
-            const container = document.getElementById('threeCanvas');
-            
-            // Create Scene & Perspective Camera
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 24;
+      function initThreeEngine() {
+        const container = document.getElementById("threeCanvas");
 
-            // Render loop configurations
-            renderer = new THREE.WebGLRenderer({ canvas: container, antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Create Scene & Perspective Camera
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000,
+        );
+        camera.position.z = 24;
 
-            // Generate Precalculated Coordinates
-            generateCoordinateStates();
+        // Render loop configurations
+        renderer = new THREE.WebGLRenderer({
+          canvas: container,
+          antialias: true,
+          alpha: true,
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Populate current particle position coordinates
-            const initialCoords = new Float32Array(particleCount * 3);
-            for (let i = 0; i < particleCount * 3; i++) {
-                initialCoords[i] = morphTargets[0][i]; // Default to Helix
-            }
+        // Generate Precalculated Coordinates
+        generateCoordinateStates();
 
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(initialCoords, 3));
-
-            // High Tech Glow Particle texture using Procedural Canvas
-            const pTexture = createParticleTexture();
-
-            const material = new THREE.PointsMaterial({
-                size: 0.35,
-                map: pTexture,
-                transparent: true,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                color: 0x8b5cf6 // Starts Neon Violet
-            });
-
-            particleSystem = new THREE.Points(geometry, material);
-            scene.add(particleSystem);
-
-            // Establish responsive window sizing events
-            window.addEventListener('resize', onWindowResize);
-
-            // Establish mouse tilt interactive listeners
-            window.addEventListener('mousemove', onMouseMoveTilt);
-            
-            // Allow manual click and drag to orbit
-            window.addEventListener('mousedown', (e) => {
-                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'SELECT') {
-                    isMouseDown = true;
-                }
-            });
-            window.addEventListener('mouseup', () => { isMouseDown = false; });
-
-            // Start loop execution
-            animateThreeLoop();
+        // Populate current particle position coordinates
+        const initialCoords = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i++) {
+          initialCoords[i] = morphTargets[0][i]; // Default to Helix
         }
 
-        // Procedural particle canvas texture constructor
-        function createParticleTexture() {
-            const pCanvas = document.createElement('canvas');
-            pCanvas.width = 16;
-            pCanvas.height = 16;
-            const pCtx = pCanvas.getContext('2d');
-            const gradient = pCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-            gradient.addColorStop(0.3, 'rgba(6, 182, 212, 0.8)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            pCtx.fillStyle = gradient;
-            pCtx.fillRect(0, 0, 16, 16);
-            
-            const texture = new THREE.CanvasTexture(pCanvas);
-            return texture;
-        }
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(initialCoords, 3),
+        );
 
-        // Precalculate all destination shapes
-        function generateCoordinateStates() {
-            for (let i = 0; i < particleCount; i++) {
-                // state0: Double Helix (Computing and DNA structures)
-                const phi0 = i * 0.15;
-                const r0 = 4;
-                const x0 = Math.sin(phi0) * r0;
-                const z0 = Math.cos(phi0) * r0;
-                const y0 = (i - particleCount / 2) * 0.035;
-                morphTargets[0].push(x0, y0, z0);
+        // High Tech Glow Particle texture using Procedural Canvas
+        const pTexture = createParticleTexture();
 
-                // state1: Globe/Sphere (Representing Web architecture stack)
-                const phi1 = Math.acos(-1 + (2 * i) / particleCount);
-                const theta1 = Math.sqrt(particleCount * Math.PI) * phi1;
-                const r1 = 8;
-                const x1 = r1 * Math.sin(phi1) * Math.cos(theta1);
-                const y1 = r1 * Math.sin(phi1) * Math.sin(theta1);
-                const z1 = r1 * Math.cos(phi1);
-                morphTargets[1].push(x1, y1, z1);
-
-                // state2: Matrix Array Grid (Representing databases and structured data arrays)
-                const cols = 25;
-                const col = i % cols;
-                const row = Math.floor(i / cols);
-                const gap = 0.8;
-                const x2 = (col - cols / 2) * gap;
-                const y2 = (row - (particleCount / cols) / 2) * gap;
-                const z2 = Math.sin(col * 0.5) * Math.cos(row * 0.5) * 1.5;
-                morphTargets[2].push(x2, y2, z2);
-
-                // state3: Data Wave Stream (Flow pathways)
-                const x3 = (i - particleCount / 2) * 0.04;
-                const y3 = Math.sin(x3 * 0.5) * 2 + Math.cos(x3 * 0.2) * 1;
-                const z3 = Math.sin(x3 * 0.2) * 4;
-                morphTargets[3].push(x3, y3, z3);
-
-                // state4: Wide Quantum Orbit Ring (Security loops)
-                const phi4 = (i / particleCount) * Math.PI * 2;
-                const r4 = 10 + Math.sin(phi4 * 8) * 0.8;
-                const x4 = Math.sin(phi4) * r4;
-                const z4 = Math.cos(phi4) * r4;
-                const y4 = Math.cos(phi4 * 5) * 1.5;
-                morphTargets[4].push(x4, y4, z4);
-            }
-        }
-
-        // Smooth particle LERP transitions
-        function animateThreeLoop() {
-            requestAnimationFrame(animateThreeLoop);
-
-            const positionsAttribute = particleSystem.geometry.attributes.position;
-            const posArray = positionsAttribute.array;
-            const targetArray = morphTargets[activeMorphIndex];
-
-            // Lerp interpolation factor
-            const lerpFactor = 0.05;
-
-            for (let i = 0; i < particleCount * 3; i++) {
-                posArray[i] += (targetArray[i] - posArray[i]) * lerpFactor;
-            }
-            positionsAttribute.needsUpdate = true;
-
-            // Apply constant micro rotation based on speed slider
-            const rotationSpeed = targetVelocity * baseSpeedModifier;
-            particleSystem.rotation.y += rotationSpeed;
-            particleSystem.rotation.x += rotationSpeed * 0.25;
-
-            // Apply smooth camera rotation modifiers
-            camera.position.x += (rotationAngleX - camera.position.x) * 0.05;
-            camera.position.y += (rotationAngleY - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        // Tilts camera gracefully as user moves cursor
-        function onMouseMoveTilt(event) {
-            if (isMouseDown) {
-                // Orbit mode on drag
-                const deltaX = event.clientX - prevMouseX;
-                const deltaY = event.clientY - prevMouseY;
-                particleSystem.rotation.y += deltaX * 0.005;
-                particleSystem.rotation.x += deltaY * 0.005;
-            } else {
-                // Parallax tilt mode
-                const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-                rotationAngleX = mouseX * 4;
-                rotationAngleY = mouseY * 4;
-            }
-            prevMouseX = event.clientX;
-            prevMouseY = event.clientY;
-        }
-
-        // Active morph state transition trigger
-        function morphParticlesTo(targetIndex) {
-            activeMorphIndex = targetIndex;
-            
-            // Adjust glowing particle color based on current form
-            const colors = {
-                0: 0x8b5cf6, // Violet for Helix
-                1: 0x06b6d4, // Cyan for Sphere
-                2: 0x10b981, // Emerald for Grid
-                3: 0xd946ef, // Purple for Wave
-                4: 0xf43f5e  // Pink for Ring
-            };
-            particleSystem.material.color.setHex(colors[targetIndex]);
-        }
-
-        // Scroll watcher triggers shape morphs automatically to correspond with target sections
-        window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-            const threshold = window.innerHeight * 0.6;
-
-            if (scrollPos < threshold) {
-                if (activeMorphIndex !== 0) morphParticlesTo(0);
-            } else if (scrollPos < threshold * 2.5) {
-                if (activeMorphIndex !== 1) morphParticlesTo(1);
-            } else if (scrollPos < threshold * 4.5) {
-                if (activeMorphIndex !== 2) morphParticlesTo(2);
-            } else if (scrollPos < threshold * 6.5) {
-                if (activeMorphIndex !== 3) morphParticlesTo(3);
-            } else {
-                if (activeMorphIndex !== 4) morphParticlesTo(4);
-            }
+        const material = new THREE.PointsMaterial({
+          size: 0.35,
+          map: pTexture,
+          transparent: true,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          color: 0x8b5cf6, // Starts Neon Violet
         });
 
+        particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
 
-        // --- 2. Interactive Terminal Engine Emulator ---
-        const terminalScreen = document.getElementById('terminal-screen');
-        const cmdInput = document.getElementById('shell-cmd-input');
-        const historyContainer = document.getElementById('terminal-history-list');
+        // Establish responsive window sizing events
+        window.addEventListener("resize", onWindowResize);
 
-        const TERMINAL_DIALECT = {
-            help: `Available Software Developer Commands:
+        // Establish mouse tilt interactive listeners
+        window.addEventListener("mousemove", onMouseMoveTilt);
+
+        // Allow manual click and drag to orbit
+        window.addEventListener("mousedown", (e) => {
+          if (
+            e.target.tagName !== "INPUT" &&
+            e.target.tagName !== "BUTTON" &&
+            e.target.tagName !== "A" &&
+            e.target.tagName !== "SELECT"
+          ) {
+            isMouseDown = true;
+          }
+        });
+        window.addEventListener("mouseup", () => {
+          isMouseDown = false;
+        });
+
+        // Start loop execution
+        animateThreeLoop();
+      }
+
+      // Procedural particle canvas texture constructor
+      function createParticleTexture() {
+        const pCanvas = document.createElement("canvas");
+        pCanvas.width = 16;
+        pCanvas.height = 16;
+        const pCtx = pCanvas.getContext("2d");
+        const gradient = pCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
+        gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+        gradient.addColorStop(0.3, "rgba(6, 182, 212, 0.8)");
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        pCtx.fillStyle = gradient;
+        pCtx.fillRect(0, 0, 16, 16);
+
+        const texture = new THREE.CanvasTexture(pCanvas);
+        return texture;
+      }
+
+      // Precalculate all destination shapes
+      function generateCoordinateStates() {
+        for (let i = 0; i < particleCount; i++) {
+          // state0: Double Helix (Computing and DNA structures)
+          const phi0 = i * 0.15;
+          const r0 = 4;
+          const x0 = Math.sin(phi0) * r0;
+          const z0 = Math.cos(phi0) * r0;
+          const y0 = (i - particleCount / 2) * 0.035;
+          morphTargets[0].push(x0, y0, z0);
+
+          // state1: Globe/Sphere (Representing Web architecture stack)
+          const phi1 = Math.acos(-1 + (2 * i) / particleCount);
+          const theta1 = Math.sqrt(particleCount * Math.PI) * phi1;
+          const r1 = 8;
+          const x1 = r1 * Math.sin(phi1) * Math.cos(theta1);
+          const y1 = r1 * Math.sin(phi1) * Math.sin(theta1);
+          const z1 = r1 * Math.cos(phi1);
+          morphTargets[1].push(x1, y1, z1);
+
+          // state2: Matrix Array Grid (Representing databases and structured data arrays)
+          const cols = 25;
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const gap = 0.8;
+          const x2 = (col - cols / 2) * gap;
+          const y2 = (row - particleCount / cols / 2) * gap;
+          const z2 = Math.sin(col * 0.5) * Math.cos(row * 0.5) * 1.5;
+          morphTargets[2].push(x2, y2, z2);
+
+          // state3: Data Wave Stream (Flow pathways)
+          const x3 = (i - particleCount / 2) * 0.04;
+          const y3 = Math.sin(x3 * 0.5) * 2 + Math.cos(x3 * 0.2) * 1;
+          const z3 = Math.sin(x3 * 0.2) * 4;
+          morphTargets[3].push(x3, y3, z3);
+
+          // state4: Wide Quantum Orbit Ring (Security loops)
+          const phi4 = (i / particleCount) * Math.PI * 2;
+          const r4 = 10 + Math.sin(phi4 * 8) * 0.8;
+          const x4 = Math.sin(phi4) * r4;
+          const z4 = Math.cos(phi4) * r4;
+          const y4 = Math.cos(phi4 * 5) * 1.5;
+          morphTargets[4].push(x4, y4, z4);
+        }
+      }
+
+      // Smooth particle LERP transitions
+      function animateThreeLoop() {
+        requestAnimationFrame(animateThreeLoop);
+
+        const positionsAttribute = particleSystem.geometry.attributes.position;
+        const posArray = positionsAttribute.array;
+        const targetArray = morphTargets[activeMorphIndex];
+
+        // Lerp interpolation factor
+        const lerpFactor = 0.05;
+
+        for (let i = 0; i < particleCount * 3; i++) {
+          posArray[i] += (targetArray[i] - posArray[i]) * lerpFactor;
+        }
+        positionsAttribute.needsUpdate = true;
+
+        // Apply constant micro rotation based on speed slider
+        const rotationSpeed = targetVelocity * baseSpeedModifier;
+        particleSystem.rotation.y += rotationSpeed;
+        particleSystem.rotation.x += rotationSpeed * 0.25;
+
+        // Apply smooth camera rotation modifiers
+        camera.position.x += (rotationAngleX - camera.position.x) * 0.05;
+        camera.position.y += (rotationAngleY - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      // Tilts camera gracefully as user moves cursor
+      function onMouseMoveTilt(event) {
+        if (isMouseDown) {
+          // Orbit mode on drag
+          const deltaX = event.clientX - prevMouseX;
+          const deltaY = event.clientY - prevMouseY;
+          particleSystem.rotation.y += deltaX * 0.005;
+          particleSystem.rotation.x += deltaY * 0.005;
+        } else {
+          // Parallax tilt mode
+          const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+          rotationAngleX = mouseX * 4;
+          rotationAngleY = mouseY * 4;
+        }
+        prevMouseX = event.clientX;
+        prevMouseY = event.clientY;
+      }
+
+      // Active morph state transition trigger
+      function morphParticlesTo(targetIndex) {
+        activeMorphIndex = targetIndex;
+
+        // Adjust glowing particle color based on current form
+        const colors = {
+          0: 0x8b5cf6, // Violet for Helix
+          1: 0x06b6d4, // Cyan for Sphere
+          2: 0x10b981, // Emerald for Grid
+          3: 0xd946ef, // Purple for Wave
+          4: 0xf43f5e, // Pink for Ring
+        };
+        particleSystem.material.color.setHex(colors[targetIndex]);
+      }
+
+      // Scroll watcher triggers shape morphs automatically to correspond with target sections
+      window.addEventListener("scroll", () => {
+        const scrollPos = window.scrollY;
+        const threshold = window.innerHeight * 0.6;
+
+        if (scrollPos < threshold) {
+          if (activeMorphIndex !== 0) morphParticlesTo(0);
+        } else if (scrollPos < threshold * 2.5) {
+          if (activeMorphIndex !== 1) morphParticlesTo(1);
+        } else if (scrollPos < threshold * 4.5) {
+          if (activeMorphIndex !== 2) morphParticlesTo(2);
+        } else if (scrollPos < threshold * 6.5) {
+          if (activeMorphIndex !== 3) morphParticlesTo(3);
+        } else {
+          if (activeMorphIndex !== 4) morphParticlesTo(4);
+        }
+      });
+
+      // --- 2. Interactive Terminal Engine Emulator ---
+      const terminalScreen = document.getElementById("terminal-screen");
+      const cmdInput = document.getElementById("shell-cmd-input");
+      const historyContainer = document.getElementById("terminal-history-list");
+
+      const TERMINAL_DIALECT = {
+        help: `Available Software Developer Commands:
   - cat bio.md       : Retrieve Nishanth S personal bio
   - git log          : Review active project commits log
   - run analytics    : Deploy student attendance prediction loop
   - skills           : Inspect languages and network utilities
   - clear            : Wipe terminal console outputs`,
-            'cat bio.md': `NISHANTH S // CSE Grads 2026
+        "cat bio.md": `NISHANTH S // CSE Grads 2026
 ---------------------------------
 High-performing software engineering student with expertise in C++, Python development, and interface UI layouts.
 Equipped with verified internship training in Python classification models and Figma components layouts.
 Verbatim CV reference filename: "Nishanth .resume.pdf"`,
-            'git log': `commit d8e74a21 (HEAD -> main)
+        "git log": `commit d8e74a21 (HEAD -> main)
 Author: Nishanth S <snishanthnishanths5@gmail.com>
 Date:   Jul 2026
 
     feat: Constructed active 3D particle morphing algorithm
     feat: Added client-side prediction logs to Attendance analyzer
     docs: Outlined technical certifications in "Nishanth .resume.pdf"`,
-            skills: `CORE TECH SPECS:
+        skills: `CORE TECH SPECS:
 - Web: HTML5, CSS3, ES6 Javascript
 - Programming: Python, C++
 - Secure Infrastructure: Subnetting, TCP/IP, OSI, Wireshark, Linux Shell`,
-            'run analytics': `[SYS] Executing attendance_predictor.py logs...
+        "run analytics": `[SYS] Executing attendance_predictor.py logs...
 [SYS] Analyzing historical cohort patterns...
-[SUCCESS] Student trends projected successfully. Check section 03 forecast module.`
-        };
+[SUCCESS] Student trends projected successfully. Check section 03 forecast module.`,
+      };
 
-        cmdInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const command = cmdInput.value.trim();
-                cmdInput.value = '';
+      cmdInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const command = cmdInput.value.trim();
+          cmdInput.value = "";
 
-                if (!command) return;
+          if (!command) return;
 
-                // Create Command Line entry
-                const cmdEntry = document.createElement('div');
-                cmdEntry.className = "flex items-center space-x-2 text-cyber-primary mt-3";
-                cmdEntry.innerHTML = `<span>$</span><span class="text-white font-bold">${command}</span>`;
-                historyContainer.appendChild(cmdEntry);
+          // Create Command Line entry
+          const cmdEntry = document.createElement("div");
+          cmdEntry.className =
+            "flex items-center space-x-2 text-cyber-primary mt-3";
+          cmdEntry.innerHTML = `<span>$</span><span class="text-white font-bold">${command}</span>`;
+          historyContainer.appendChild(cmdEntry);
 
-                const responseLine = document.createElement('div');
-                responseLine.className = "text-xs mt-1 whitespace-pre-line leading-relaxed text-gray-300";
+          const responseLine = document.createElement("div");
+          responseLine.className =
+            "text-xs mt-1 whitespace-pre-line leading-relaxed text-gray-300";
 
-                const lowerCmd = command.toLowerCase();
+          const lowerCmd = command.toLowerCase();
 
-                if (lowerCmd === 'clear') {
-                    historyContainer.innerHTML = '';
-                    return;
-                }
+          if (lowerCmd === "clear") {
+            historyContainer.innerHTML = "";
+            return;
+          }
 
-                // Trigger Three.js background morph updates based on command inputs
-                if (lowerCmd === 'run analytics') {
-                    morphParticlesTo(3); // Wave Morph
-                } else if (lowerCmd === 'git log') {
-                    morphParticlesTo(2); // Grid Morph
-                } else if (lowerCmd === 'skills') {
-                    morphParticlesTo(1); // Sphere Morph
-                }
+          // Trigger Three.js background morph updates based on command inputs
+          if (lowerCmd === "run analytics") {
+            morphParticlesTo(3); // Wave Morph
+          } else if (lowerCmd === "git log") {
+            morphParticlesTo(2); // Grid Morph
+          } else if (lowerCmd === "skills") {
+            morphParticlesTo(1); // Sphere Morph
+          }
 
-                if (TERMINAL_DIALECT[lowerCmd]) {
-                    responseLine.textContent = TERMINAL_DIALECT[lowerCmd];
-                } else {
-                    responseLine.textContent = `Command '${command}' not recognized. Input 'help' for specifications.`;
-                    responseLine.className += " text-red-400";
-                }
+          if (TERMINAL_DIALECT[lowerCmd]) {
+            responseLine.textContent = TERMINAL_DIALECT[lowerCmd];
+          } else {
+            responseLine.textContent = `Command '${command}' not recognized. Input 'help' for specifications.`;
+            responseLine.className += " text-red-400";
+          }
 
-                historyContainer.appendChild(responseLine);
-                terminalScreen.scrollTop = terminalScreen.scrollHeight;
-            }
+          historyContainer.appendChild(responseLine);
+          terminalScreen.scrollTop = terminalScreen.scrollHeight;
+        }
+      });
+
+      // Run command helper programmatically
+      function runCommand(commandText) {
+        cmdInput.value = commandText;
+        const enterEvt = new KeyboardEvent("keydown", { key: "Enter" });
+        cmdInput.dispatchEvent(enterEvt);
+      }
+
+      // --- 3. Interactive Predictive Analytics Tool ---
+      function calculateRisk(dayName, initialPct) {
+        const riskTarget = document.getElementById("riskTarget");
+        const riskBar = document.getElementById("riskBar");
+        const riskPct = document.getElementById("riskPct");
+
+        riskTarget.textContent = dayName;
+        riskBar.style.width = `${initialPct}%`;
+        riskPct.textContent = `${initialPct}%`;
+
+        // Dynamic color modulation based on severity
+        if (initialPct > 70) {
+          riskPct.className = "text-sm font-bold text-red-500";
+          riskBar.className = "bg-red-500 h-full transition-all duration-500";
+        } else if (initialPct > 40) {
+          riskPct.className = "text-sm font-bold text-yellow-500";
+          riskBar.className =
+            "bg-yellow-500 h-full transition-all duration-500";
+        } else {
+          riskPct.className = "text-sm font-bold text-cyber-accent";
+          riskBar.className =
+            "bg-cyber-accent h-full transition-all duration-500";
+        }
+      }
+
+      // --- 4. Interactive Page Modulators and Modals ---
+      function toggleResumeModal() {
+        const modal = document.getElementById("resume-modal");
+        modal.classList.toggle("hidden");
+      }
+
+      function scrollToAndMorph(elementId, morphIndex) {
+        const targetEl = document.getElementById(elementId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+          morphParticlesTo(morphIndex);
+        }
+      }
+
+      // --- 5. Speed modulator controls for WebGL canvas ---
+      const speedSlider = document.getElementById("speedSlider");
+      const speedValue = document.getElementById("speedValue");
+
+      if (speedSlider) {
+        speedSlider.addEventListener("input", (e) => {
+          const val = parseFloat(e.target.value);
+          baseSpeedModifier = val;
+          speedValue.textContent = `${val.toFixed(1)}x`;
         });
+      }
 
-        // Run command helper programmatically
-        function runCommand(commandText) {
-            cmdInput.value = commandText;
-            const enterEvt = new KeyboardEvent('keydown', { key: 'Enter' });
-            cmdInput.dispatchEvent(enterEvt);
-        }
-
-
-        // --- 3. Interactive Predictive Analytics Tool ---
-        function calculateRisk(dayName, initialPct) {
-            const riskTarget = document.getElementById('riskTarget');
-            const riskBar = document.getElementById('riskBar');
-            const riskPct = document.getElementById('riskPct');
-
-            riskTarget.textContent = dayName;
-            riskBar.style.width = `${initialPct}%`;
-            riskPct.textContent = `${initialPct}%`;
-
-            // Dynamic color modulation based on severity
-            if (initialPct > 70) {
-                riskPct.className = "text-sm font-bold text-red-500";
-                riskBar.className = "bg-red-500 h-full transition-all duration-500";
-            } else if (initialPct > 40) {
-                riskPct.className = "text-sm font-bold text-yellow-500";
-                riskBar.className = "bg-yellow-500 h-full transition-all duration-500";
-            } else {
-                riskPct.className = "text-sm font-bold text-cyber-accent";
-                riskBar.className = "bg-cyber-accent h-full transition-all duration-500";
-            }
-        }
-
-
-        // --- 4. Interactive Page Modulators and Modals ---
-        function toggleResumeModal() {
-            const modal = document.getElementById('resume-modal');
-            modal.classList.toggle('hidden');
-        }
-
-        function scrollToAndMorph(elementId, morphIndex) {
-            const targetEl = document.getElementById(elementId);
-            if (targetEl) {
-                targetEl.scrollIntoView({ behavior: 'smooth' });
-                morphParticlesTo(morphIndex);
-            }
-        }
-
-
-        // --- 5. Speed modulator controls for WebGL canvas ---
-        const speedSlider = document.getElementById('speedSlider');
-        const speedValue = document.getElementById('speedValue');
-
-        if (speedSlider) {
-            speedSlider.addEventListener('input', (e) => {
-                const val = parseFloat(e.target.value);
-                baseSpeedModifier = val;
-                speedValue.textContent = `${val.toFixed(1)}x`;
-            });
-        }
-
-        // Guaranteeing loop executions after load completes
-        window.onload = function() {
-            initThreeEngine();
-        };
+      // Guaranteeing loop executions after load completes
+      window.onload = function () {
+        initThreeEngine();
+      };
     </script>
-</body>
+  </body>
 </html>
